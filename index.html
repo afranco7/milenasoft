@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuestionario Reforma Laboral</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px 5px 0 0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-yes {
+      background-color: #4caf50;
+      color: white;
+    }
+    .btn-no {
+      background-color: #f44336;
+      color: white;
+    }
+    .btn-next, .btn-back {
+      background-color: #008cba;
+      color: white;
+    }
+    p {
+      margin-top: 15px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+    <div style="text-align: center; padding: 20px 0; background-color: #f0f0f0; border-bottom: 1px solid #ddd;">
+        <h1 style="margin: 0; color: #333; font-size: 2em;">Ficha autodiagnóstica reforma laboral</h1>
+    </div>
+    <header style="background-color: #333; color: white; padding: 10px 0; text-align: center;">
+  <nav>
+    <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; justify-content: center;">
+      <li style="margin: 0 15px;">
+        <a href="#section1" style="color: white; text-decoration: none;"
+           title="CONTRATACIÓN LABORAL">Sección 1</a>
+      </li>
+      <li style="margin: 0 15px;">
+        <a href="#section2" style="color: white; text-decoration: none;"
+           title="CONTRATO DE APRENDIZAJE">Sección 2</a>
+      </li>
+      <li style="margin: 0 15px;">
+        <a href="#section3" style="color: white; text-decoration: none;"
+           title="PROCESOS DISCIPLINARIOS Y RIT">Sección 3</a>
+      </li>
+      <li style="margin: 0 15px;">
+        <a href="#section4" style="color: white; text-decoration: none;"
+           title="JORNADAS Y RECARGOS">Sección 4</a>
+      </li>
+      <li style="margin: 0 15px;">
+        <a href="#section5" style="color: white; text-decoration: none;"
+           title="INCLUSIÓN Y DIVERSIDAD">Sección 5</a>
+      </li>
+      <li style="margin: 0 15px;">
+        <a href="#section6" style="color: white; text-decoration: none;"
+           title="TERCERIZACIÓN LABORAL">Sección 6</a>
+      </li>
+      <li style="margin: 0 15px;">
+        <a href="#section7" style="color: white; text-decoration: none;"
+           title="IMPLEMENTACIÓN NUEVAS FORMAS DE PRESTACIÓN DEL SERVICIO">Sección 7</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div id="registrationFormContainer" class="container" style="margin-top: 20px;">
+    <h2 style="text-align: center; margin-bottom: 25px; color: #333;">Registro para iniciar el autodiagnóstico</h2>
+    <form id="registrationForm">
+      <div style="margin-bottom: 15px;">
+        <label for="fullName" style="display: block; margin-bottom: 5px; font-weight: bold;">Nombre completo <span style="color: red;">*</span></label>
+        <input type="text" id="fullName" name="fullName" required
+               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label for="email" style="display: block; margin-bottom: 5px; font-weight: bold;">Email <span style="color: red;">*</span></label>
+        <input type="email" id="email" name="email" required
+               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label for="documentNumber" style="display: block; margin-bottom: 5px; font-weight: bold;">Número de documento (opcional)</label>
+        <input type="text" id="documentNumber" name="documentNumber"
+               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label for="company" style="display: block; margin-bottom: 5px; font-weight: bold;">Empresa (opcional)</label>
+        <input type="text" id="company" name="company"
+               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+      </div>
+      <div style="margin-bottom: 20px;">
+        <label for="phoneNumber" style="display: block; margin-bottom: 5px; font-weight: bold;">Número de teléfono (opcional)</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber"
+               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+      </div>
+      <button type="submit" class="btn btn-yes" style="width: 100%; padding: 12px; font-size: 1.1em;">Iniciar Autodiagnóstico</button>
+    </form>
+  </div>
+
+  <div id="questionnaireContainer" class="container" style="display: none;">
+    <div id="app" style="min-height: 200px;"></div> </div>
+
+  <script>
+   let currentSection = 0;
+    let currentQuestion = 0;
+    let history = []; // Para almacenar el historial de preguntas
+
+    const app = document.getElementById('app');
+    const registrationFormContainer = document.getElementById('registrationFormContainer');
+    const questionnaireContainer = document.getElementById('questionnaireContainer');
+    const registrationForm = document.getElementById('registrationForm');
+
+    const section1 = [
+      {
+        text: '¿Todos los contratos laborales en tu empresa están formalizados por escrito y firmados por ambas partes?',
+        yesText: `Con la entrada en vigor de la Ley 2466 de 2025, es necesario actualizar la minuta del contrato laboral para alinearla con los nuevos requerimientos legales. Es fundamental revisar si hubo cambios en la jornada inicialmente pactada, y definir claramente cuál será el día de descanso obligatorio del trabajador.
+Además, se deben establecer las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
+También es recomendable incluir cláusulas que delimiten los requisitos formales de solicitud y justificación de los nuevos permisos laborales, tales como: Asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido. Finalmente, se debe considerarse la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la nueva ley.`,
+        noText: `Formaliza por escrito todos los contratos laborales sin excepción. La ley presume contrato a término indefinido si no hay documento firmado.
+Recomendaciones clave:
+Redacta y firma contratos con cada trabajador.
+Define tipo de contrato, duración y jornada.
+Pacta por escrito el día de descanso obligatorio.
+Establece las obligaciones de conducta de los trabajadores y las políticas de no discriminación, acoso o violencia.
+Incluye requisitos para solicitudes de nuevos permisos laborales.
+Considera acordar el pago mensualizado de cesantías y sus intereses.
+Capacita a los empleados sobre los cambios contractuales.
+Mantén los contratos actualizados y fácilmente accesibles.
+Asegúrate de que tus nuevos contratos, en los que se acuerden cesantías mensualizadas, los trabajadores cuenten con una cuenta en la que se les deposite el auxilio.
+Verifica que los contratos a término fijo, por obra o labor, cumplan con los nuevos requisitos de justificación y que se hagan por escrito.`
+      },
+      {
+        text: '¿Tu empresa tiene un período de prueba establecido en los contratos laborales?',
+        yesText: `Asegúrate de que el período de prueba esté pactado por escrito.
+Recuerda que no puede exceder los dos (2) meses. En contratos a término fijo inferiores a un (1) año, el período de prueba no puede ser superior a la quinta parte del término inicialmente pactado.
+El período de prueba no es obligatorio, por lo cual, si no se pacta por escrito se entiende que el contrato es de forma inmediata.
+Durante el período de prueba, tanto el empleador como el trabajador pueden dar por terminado el contrato sin previo aviso ni indemnización.
+Evalúa los resultados de tus pruebas psicotécnicas y entrevistas para identificar si la nueva reforma puede limitar tu acceso a la información del candidato.
+Mantén registro escrito de la evaluación y seguimiento del desempeño del trabajador durante este período, incluyendo actas o informes que justifiquen la decisión de dar por terminado el contrato.
+Capacita a los líderes y directivos para realizar un seguimiento efectivo durante el etapa del periodo de prueba.`,
+        noText: `No es obligatorio, el contrato se entiende de forma inmediata.
+Recomendaciones clave:
+Si decides no establecer período de prueba, asegúrate de que tus procesos de selección sean muy rigurosos.
+Si decides implementarlo, que este siempre se pacte por escrito y se notifique expresamente al trabajador, antes del inicio de su labor.
+Asegúrate de que la duración del período de prueba cumpla con los límites legales.`
+      }
+    ];
+
+    const section2 = [
+      {
+        text: '¿Tu empresa tiene mas de 15 trabajadores?',
+        yesText: `Verifica que estás cumpliendo con la cuota mínima obligatoria conforme al número de trabajadores.
+Evalúa si te resulta más conveniente monetizar la cuota o vincular directamente al aprendiz, teniendo en cuenta el impacto económico y operativo.
+Asegúrate de formalizar correctamente el contrato de aprendizaje bajo los nuevos parámetros, según el cual ahora se considera como Contrato a término fijo especial.
+Mantén registros actualizados y certificados del tiempo en práctica, ya que ahora se reconoce como experiencia laboral.
+Evalúa la viabilidad de implementar la modalidad de formación dual, que integra teoría y práctica de manera simultánea con acompañamiento conjunto entre la empresa y el Sena.
+Esta modalidad te ayuda a formar nuevos talentos alineado a las necesidades reales del negocio, ya que la empresa participa activamente en el diseño del plan formativo del aprendiz.`,
+      },
+      {
+        text: '¿Tu empresa tiene o planea contratar trabajadores extranjeros?',
+        yesText: `Debes tener en cuenta los cambios introducidos por la reforma laboral respecto a trabajadores migrantes:
+
+Recomendaciones clave:
+- Garantiza igualdad de derechos laborales y de seguridad social a las personas extranjeras, sin importar su estatus migratorio.
+- Ya no necesitas una visa de trabajo previa, por lo cual una vez se haya suscrito el contrato de trabajo, ponte en contacto con Migración Colombia quien debe facilitar el proceso de regularización migratoria.
+- Mantente atento a la reglamentación que expedirá el Ministerio de Relaciones Exteriores sobre el proceso de regularización.
+- Cumple con las obligaciones de reporte vigentes:
+  - Notificar a Migración Colombia el inicio, terminación o cualquier novedad del contrato laboral con extranjeros, a través de la plataforma SIRE.
+  - Reportar ante el Ministerio del Trabajo el inicio y terminación del contrato a través del RUTEC.
+- Evalúa la posibilidad de aplicar el teletrabajo transnacional, si la naturaleza del cargo permite desarrollar el trabajo a distancia.`,
+      }
+    ];
+
+    const section3 = [
+      {
+        text: '1.- A qué sector pertenece tu empresa:',
+        options: [
+          { text: 'Sector manufacturero, agropecuario o industrial', next: 'sector_manufacturero' },
+          { text: 'Sector servicios', next: 'sector_servicios' },
+          { text: 'Sector de comercio', next: 'sector_comercio' }
+        ]
+      },
+      // Pregunta dinámica según el sector, se manejará en showRecommendation
+      {
+        text: '¿Tienes menos de 10 trabajadores?', // Esta pregunta solo aparece si el sector es Micro o Pequeña empresa
+        yesText: `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
+Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
+Se recomienda tener una guía interna sencilla que oriente la actuación frente a faltas, capacitar al personal encargado sobre cómo manejar estas situaciones, y siempre dejar evidencia escrita de las actuaciones, lo cual brinda respaldo jurídico y evita conflictos futuros.`,
+        noText: `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
+Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
+Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
+Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
+Reglamenta el uso de la TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`
+      },
+      {
+        text: '¿Tu empresa cuenta con un Reglamento Interno de Trabajo vigente y conocido por los trabajadores?',
+        yesText: `Asegúrate de actualizar el RIT conforme a las nuevas exigencias de la reforma laboral, en especial lo relacionado con el respeto a la dignidad humana, la no discriminación, los nuevos permisos remunerados, el día de descanso obligatorio, los requisitos para flexibilizar la jornada laboral a los trabajadores con responsabilidades del cuidado, las nuevas formas de trabajo a distancia.
+Publica el RIT en medios digitales accesibles que sean del control de la empresa.
+Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`,
+        noText: `Si tienes más de 10 empleados el RIT es obligatorio.
+Inicia el diseño del reglamento a la mayor brevedad posible.
+Publica el RIT en medios digitales accesibles que sean del control de la empresa.
+Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`
+      },
+      {
+        text: '¿La empresa tiene políticas definidas para prevenir y sancionar el acoso y la violencia en el trabajo?',
+        yesText: `Actualiza tus políticas para incorporar la ampliación del concepto de acoso y violencia en el trabajo de acuerdo con los parámetros nuevos que trae la reforma laboral.`,
+        noText: `Es obligatorio para todas las empresas contar con mecanismos de prevención del acoso laboral y acoso sexual en el trabajo.
+Implementa un comité de convivencia actualizado conforme a la Ley 1010 y la nueva reforma laboral.
+Integra perspectiva de género y canales confidenciales.`
+      }
+    ];
+
+    const section4 = [
+      {
+        text: '¿Tienes trabajadores que laboran después de las 7:00 p.m.?',
+        yesText: `El recargo nocturno se mantiene en el 35% por hora labor, pero desde el 25 de Diciembre de 2025, se aplicará desde las 7:00 p.m. hasta las 6:00 a.m., por lo cual debes implementar las siguientes acciones:
+Actualizar sistemas de nómina para que se liquide el recargo nocturno desde la hora correcta.
+Evaluar el impacto económico: Proyectar el aumento en los costos laborales y considerar posibles medidas de eficiencia operativa o redistribución de turnos.
+Capacitar al personal de talento humano y supervisores: Para asegurar que comprendan el nuevo esquema, puedan hacer seguimiento adecuado.
+Mantener registros claros de las jornadas y recargos pagados, ya que el Ministerio del Trabajo puede exigir soportes y aplicar sanciones en caso de incumplimiento.`
+      },
+      {
+        text: '¿Tienes personal que labora domingos o festivos de manera ocasional o permanente?',
+        yesText: `El tratamiento de estos días se ha unificado bajo el concepto de “día de descanso obligatorio”, y el recargo por trabajar en ellos se ajusta al 100% de manera progresiva.
+A partir del 1° de julio de 2025, subirá al 80%;
+desde el 1° de julio de 2026, será del 90%,
+a partir del 1° de julio de 2027 será del 100%,
+Aunque los empleadores pueden acogerse a este último desde ya si así lo deciden.
+Evalúa el impacto financiero de este incremento en tu nómina.
+Evalúa la pertinencia de pactar (por escrito) que el día de descanso obligatorio sea distinto al domingo.
+Capacitar a RRHH y supervisores para que puedan realizar un adecuado control a la rotación de los turnos laborales, a fin de evitar conflictos legales.`
+      },
+      {
+        text: '¿Tu empresa opera en jornadas continuas o turnos rotativos (24/7), incluyendo trabajo nocturno o fines de semana?',
+        yesText: `Debes prepararte para los impactos en costos laborales, asociados a: Reducción de la jornada laboral, aumento de recargos nocturnos, y aumento por trabajo en días de descanso obligatorio (antes domingos y festivos).
+Recomendaciones:
+Realiza una valoración financiera que permita medir el impacto y te ayude a tomar decisiones estratégicas, que pueden incluir la implementación de la jornada especial de turnos continuos de 6 horas diarias / 36 horas semanales, permitiendo operar la empresa 24/7 reduciendo el impacto económico de recargos nocturnos, o por trabajo en domingos o festivos.`
+      },
+      {
+        text: '¿Tu empresa tiene trabajadores que laboran tiempo suplementario (horas extras)?',
+        yesText: `Revisa si llevas un registro actualizado por trabajador y por tipo de hora (diurna/nocturna).
+Este registro debe incluir mínimo: Nombre, actividad desarrollada, número de horas y si son diurnas o nocturna.
+Asegúrate de que el registro se mantenga actualizado, sea auditable y se entregue al trabajador si lo solicita, con comprobante de pago.
+Implementa inmediatamente un sistema confiable para controlar el número de horas extras que laboran tus empleados.
+Realiza una auditoría interna urgente y asegúrate que tus empleados no laboren mas de 2 horas extras día y 12 a la semana.
+Verifica que las horas extras estén correctamente liquidadas y pagadas con sus recargos.
+Soporta estos pagos en la nómina y entrega comprobantes al trabajador.
+Un error de cálculo puede llevar a la suspensión de la facultad para trabajar horas extra por 6 meses y otras sanciones.
+Recuerda, ya no necesitas autorización previa para que tus empleados laboren hora extra.`
+      }
+    ];
+
+    const section5 = [
+      {
+        text: '¿Tu empresa cuenta con 100 o más trabajadores permanentes?',
+        yesText: `Evalúa cuántos trabajadores con discapacidad tienes vinculados y verifica si cumples con este mínimo obligatorio:
+Hasta 500 empleados: al menos 2 trabajadores con discapacidad por cada 100.
+Más de 500 empleados: los anteriores más 1 adicional por cada tramo de 100.
+Al momento de la vinculación asegura que los trabajadores con discapacidad cuenten con la certificación válida del Ministerio de Salud.
+Si existen razones técnicas o de salud ocupacional que impidan la contratación de personas en situación de discapacidad para determinados cargos documéntalo adecuadamente para que puedas informarlo al Ministerio del Trabajo.
+A partir del segundo año de entrada en vigencia de la reforma (julio de 2026), el cumplimiento de las cuotas de vinculación de personas con discapacidad será obligatorio.
+Por ello, es fundamental analizar desde ahora tu planta de cargos, identificar puestos viables para esta población, y planear con tiempo los ajustes razonables que permitan su contratación efectiva.
+Capacita al equipo de Recursos Humanos sobre las obligaciones de registro obligatorio de contratos en la plataforma del Ministerio del Trabajo, y sensibiliza a los líderes y supervisores sobre discapacidad e inclusión laboral, para que estén preparados para gestionar estos procesos de forma adecuada.`
+      },
+      {
+        text: '¿Tienes en tu empresa trabajadores(as) que ejercen responsabilidades de cuidado sobre hijos menores, personas con discapacidad, mayores o con enfermedades graves dentro de su núcleo familiar?',
+        yesText: `Debes estar preparado para recibir solicitudes de flexibilidad laboral conforme a la nueva regulación. Asegúrate de:
+Establecer un protocolo claro para evaluar solicitudes de flexibilización de la jornada laboral o implementación de teletrabajo.
+Cuando la recibas documenta adecuadamente la solicitud, la evaluación y la respuesta que se dé, la cual debe entregarse en un plazo máximo de 15 días hábiles.
+Incorporar como se regulará el ejercicio de este derecho en tu Reglamento Interno de Trabajo y contrato laboral.`,
+        noText: `Aunque hoy no tengas casos identificados, es recomendable:
+Incluir este tema en el diagnóstico de clima laboral o encuestas internas, para anticiparte.
+Actualizar políticas internas para estar preparado ante futuras solicitudes.
+Incorporar como se regulara este derecho en tu Reglamento Interno de Trabajo y contrato laboral.`
+      },
+      {
+        text: '¿En tu empresa, existen diferencias en el valor del salario para hombres y mujeres aunque ocupen el mismo cargo?',
+        yesText: `Debes tomar medidas inmediatas para cumplir con la nueva regulación:
+Realiza un diagnóstico de equidad salarial para identificar y justificar cualquier diferencia con base en criterios objetivos.
+Alinea los perfiles de cargo y documenta las razones técnicas detrás de cada diferenciación salarial.
+Diseña e implementa una política de equidad salarial que corrija y prevenga nuevas brechas salariales.`
+      },
+      {
+        text: '¿Tu empresa tiene implementado un Comité de Convivencia Laboral y protocolos para prevenir, atender y sancionar el acoso laboral?',
+        yesText: `Debes ajustar tus políticas actuales para cumplir con los nuevos lineamientos de la Ley 2466 de 2025, que amplían el alcance del acoso laboral y sexual.
+Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
+Además, debes integrar una perspectiva de género, con acciones específicas frente al acoso por razón de género y violencia sexual.
+Por último, asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan un proceso claro para recibir, hacer seguimiento y atender las quejas.`,
+        noText: `Debes actuar de inmediato. No contar con Comité y protocolos te expone a sanciones y responsabilidades legales.
+
+Recomendaciones:
+Conforma el Comité de Convivencia Laboral de acuerdo con la normativa.
+Diseña una política de acoso laboral y una política de acoso sexual que cumpla con los nuevos lineamientos de la Ley 2466 de 2025, que amplía el alcance del acoso laboral y sexual.
+Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
+Asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan un proceso claro para recibir, hacer seguimiento y atender las quejas.`
+      }
+    ];
+
+    const section6 = [
+      {
+        text: '¿Tu empresa contrata personal a través de Empresas de Servicios Temporales (EST)?',
+        yesText: `Debes revisar y ajustar tu estrategia de contratación indirecta, ya que la reforma laboral limita el uso de EST únicamente a las siguientes causales:
+Reemplazo de personal ausente temporalmente.
+Aumento ocasional de la producción.
+Labores transitorias que no excedan seis meses.
+
+Recomendaciones clave:
+Identifica claramente qué cargos o funciones son realmente temporales, como picos de producción, reemplazos por licencias u otras ausencias justificadas.
+Documenta la causa específica del encargo temporal tanto en el contrato comercial con la EST como en los contratos laborales de los trabajadores en misión.
+Verifica que los trabajadores en misión no estén desempeñando funciones estructurales o permanentes dentro de tu operación.
+Implementa controles internos para evitar exceder los límites legales de duración o causalidad.
+Evita la rotación de personal entre diferentes EST para las mismas funciones, ya que esto puede ser considerado intermediación laboral ilegal.
+Capacita a líderes y personal de RRHH sobre los riesgos legales y sanciones.`
+      }
+    ];
+
+    const section7 = [
+      {
+        text: '¿Tienes trabajadores en modalidad de teletrabajo o estás considerando implementarlo?',
+        yesText: `Formaliza el teletrabajo mediante contrato escrito: Incluye condiciones específicas como la modalidad, lugar de ejecución, disponibilidad, medios tecnológicos, y controles sobre el cumplimiento.
+Incluye cláusula de reversibilidad: El contrato debe establecer que el teletrabajo no es obligatorio para el trabajador, y que puede regresar a la modalidad presencial bajo ciertas condiciones acordadas.
+Diseña o actualiza la política de teletrabajo: Debe contemplar la seguridad digital, manejo de la información, disponibilidad del trabajador, desconexión laboral, y cumplimiento del SG-SST.
+Paga el auxilio de conectividad digital:
+Es obligatorio si el salario del teletrabajador es igual o inferior a 2 SMMLV.
+Este auxilio reemplaza el auxilio de transporte en la modalidad remota o de teletrabajo.
+Evalúa el teletrabajo transnacional:
+Puedes implementarlo si las funciones se pueden desempeñar desde el exterior.
+Asegura la protección de la salud en el entorno remoto: Incluye al teletrabajador en la evaluación de riesgos del SG-SST y entrega recomendaciones sobre ergonomía, pausas activas y riesgos psicosociales.
+Implementa canales de reporte y control claros: Utiliza medios tecnológicos para documentar la jornada laboral, cumplimiento de funciones, y entrega de resultados.`
+      }
+    ];
+
+    // Actualiza la variable 'sections' para incluir todas las nuevas secciones
+    let sections = [section1, section2, section3, section4, section5, section6, section7];
+
+    // Función para manejar el desplazamiento suave
+    function scrollToSection(sectionId) {
+      const sectionElement = document.getElementById(sectionId);
+      if (sectionElement) {
+        sectionElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Modifica la función renderQuestion para manejar las transiciones de sección y añadir IDs
+    function renderQuestion() {
+      if (currentSection >= sections.length) {
+        app.innerHTML = `<h2>✅ ¡Cuestionario Finalizado!</h2>
+          <p>Has completado todas las secciones del autodiagnóstico.</p>`;
+        return;
+      }
+
+      const currentSectionData = sections[currentSection];
+      if (currentQuestion >= currentSectionData.length) {
+        currentSection++;
+        currentQuestion = 0;
+        renderQuestion(); // Intenta renderizar la primera pregunta de la siguiente sección
+        return;
+      }
+
+      const question = currentSectionData[currentQuestion];
+      // Añade el ID de la sección al inicio de cada sección, si es la primera pregunta de la sección
+      let sectionHeaderHtml = '';
+      if (currentQuestion === 0) {
+        sectionHeaderHtml = `<h2 id="section${currentSection + 1}">Sección ${currentSection + 1}: ${question.text}</h2>`;
+      } else {
+        sectionHeaderHtml = `<h2>${question.text}</h2>`;
+      }
+
+      app.innerHTML = sectionHeaderHtml;
+
+      if (question.options) {
+        question.options.forEach(option => {
+          app.innerHTML += `<button class="btn btn-yes" onclick="handleSectorSelection('${option.next}')">${option.text}</button>`;
+        });
+      } else if (question.yesText && question.noText) {
+        app.innerHTML += `
+          <button class="btn btn-yes" onclick="showRecommendation('yes')">Sí</button>
+          <button class="btn btn-no" onclick="showRecommendation('no')">No</button>
+        `;
+      } else if (question.yesText) {
+        app.innerHTML += `<button class="btn btn-yes" onclick="showRecommendation('yes')">Sí</button>`;
+      } else if (question.noText) {
+        app.innerHTML += `<button class="btn btn-no" onclick="showRecommendation('no')">No</button>`;
+      }
+
+      // Botón "Anterior"
+      if (currentQuestion > 0 || currentSection > 0) {
+        app.innerHTML += `<br><button class="btn btn-back" onclick="goBack()">Anterior</button>`;
+      }
+    }
+
+    // Función modificada para manejar la lógica del sector en la Sección 3
+    function handleSectorSelection(sector) {
+        history.push({ section: currentSection, question: currentQuestion }); // Guarda el estado actual
+        let incomeQuestionText = '';
+        let incomeRanges = [];
+
+        if (sector === 'sector_manufacturero') {
+            incomeQuestionText = 'Cuál es el nivel anual de ingresos ordinarios de tu empresa?';
+            incomeRanges = [
+                { text: 'Menor o igual a $1.173 millones', type: 'Microempresa', max: 1173 },
+                { text: 'Mayor a $1.173 millones y hasta $10.212 millones', type: 'Pequeña empresa', min: 1173, max: 10212 },
+                { text: 'Mayor a $10.212 millones y hasta $86.517 millones', type: 'Mediana empresa', min: 10212, max: 86517 },
+                { text: 'Mayor a $86.517 millones', type: 'Gran empresa', min: 86517 }
+            ];
+        } else if (sector === 'sector_servicios') {
+            incomeQuestionText = 'Cuál es el nivel anual de ingresos ordinarios de tu empresa?';
+            incomeRanges = [
+                { text: 'Menor o igual a $1.642 millones', type: 'Microempresa', max: 1642 },
+                { text: 'Entre $1.642 y $6.575 millones', type: 'Pequeña empresa', min: 1642, max: 6575 },
+                { text: 'Entre $6.575 y $24.060 millones', type: 'Mediana empresa', min: 6575, max: 24060 },
+                { text: 'Mayor a $24.060 millones', type: 'Gran empresa', min: 24060 }
+            ];
+        } else if (sector === 'sector_comercio') {
+            incomeQuestionText = 'Cuál es el nivel anual de ingresos ordinarios de tu empresa?';
+            incomeRanges = [
+                { text: 'Menor o igual a $2.229 millones', type: 'Microempresa', max: 2229 },
+                { text: 'Entre $2.229 y $21.480 millones', type: 'Pequeña empresa', min: 2229, max: 21480 },
+                { text: 'Entre $21.480 y $107.566 millones', type: 'Mediana empresa', min: 21480, max: 107566 },
+                { text: 'Mayor a $107.566 millones', type: 'Gran empresa', min: 107566 }
+            ];
+        }
+
+        let content = `<h2>${incomeQuestionText}</h2>`;
+        incomeRanges.forEach(range => {
+            content += `<button class="btn btn-yes" onclick="handleIncomeSelection('${range.type}')">${range.text}</button>`;
+        });
+        app.innerHTML = content;
+        app.innerHTML += `<br><button class="btn btn-back" onclick="goBack()">Anterior</button>`;
+    }
+
+    function handleIncomeSelection(companyType) {
+        history.push({ section: currentSection, question: currentQuestion }); // Guarda el estado actual
+        if (companyType === 'Microempresa' || companyType === 'Pequeña empresa') {
+            // Avanza a la pregunta "¿Tienes menos de 10 trabajadores?" que es la siguiente en section3
+            currentQuestion = 1; // Ajusta el índice de la pregunta en section3
+            renderQuestion();
+        } else {
+            // Mediana o Gran empresa, o Micro/Pequeña con más de 10 empleados
+            const recommendationText = `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
+Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
+Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
+Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
+Reglamenta el uso de la TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`;
+            app.innerHTML = `<p>${recommendationText.replace(/\n/g, '<br>')}</p>
+                <button class="btn btn-next" onclick="nextQuestion()">Siguiente</button>
+                <button class="btn btn-back" onclick="goBack()">Anterior</button>`;
+            currentQuestion = 1; // Para que al darle siguiente pase a la siguiente pregunta de la sección 3
+        }
+    }
+
+
+    function showRecommendation(answer) {
+      const question = sections[currentSection][currentQuestion];
+      const text = answer === 'yes' ? question.yesText : question.noText;
+
+      history.push({ section: currentSection, question: currentQuestion }); // Guarda la sección y pregunta actuales
+      app.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>
+        <button class="btn btn-next" onclick="nextQuestion()">Siguiente</button>
+        <button class="btn btn-back" onclick="goBack()">Anterior</button>`;
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < sections[currentSection].length) {
+        renderQuestion();
+      } else {
+        // Si no hay más preguntas en la sección actual, intenta pasar a la siguiente sección
+        currentSection++;
+        currentQuestion = 0; // Reinicia el contador de preguntas para la nueva sección
+        if (currentSection < sections.length) {
+          app.innerHTML = `<h2 id="section${currentSection + 1}">✅ Sección ${currentSection + 1}</h2><p>Haz clic en siguiente para comenzar.</p>
+            <button class="btn btn-next" onclick="renderQuestion()">Comenzar Sección ${currentSection + 1}</button>
+            <button class="btn btn-back" onclick="goBack()">Anterior</button>`;
+        } else {
+          app.innerHTML = `<h2>✅ ¡Cuestionario Finalizado!</h2>
+            <p>Has completado todas las secciones del autodiagnóstico.</p>
+            <button class="btn btn-back" onclick="goBack()">Anterior</button>`;
+        }
+      }
+    }
+
+    function goBack() {
+        if (history.length > 0) {
+            const lastState = history.pop();
+            currentSection = lastState.section;
+            currentQuestion = lastState.question;
+            renderQuestion();
+        } else {
+            // Si no hay historial, y estamos en la primera pregunta de la primera sección, no hacemos nada o mostramos un mensaje.
+            alert("Ya estás en la primera pregunta.");
+        }
+    }
+
+    // *** Lógica para el formulario de registro ***
+
+    // Ocultar el contenedor del cuestionario al inicio
+    questionnaireContainer.style.display = 'none';
+
+    registrationForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar el envío predeterminado del formulario
+
+      const fullName = document.getElementById('fullName').value;
+      const email = document.getElementById('email').value;
+      const documentNumber = document.getElementById('documentNumber').value;
+      const company = document.getElementById('company').value;
+      const phoneNumber = document.getElementById('phoneNumber').value;
+
+      // Validar campos obligatorios
+      if (!fullName || !email) {
+        alert('Por favor, completa los campos obligatorios: Nombre completo y Email.');
+        return;
+      }
+
+      const userData = {
+        fullName: fullName,
+        email: email,
+        documentNumber: documentNumber,
+        company: company,
+        phoneNumber: phoneNumber
+      };
+
+      console.log('Datos del usuario registrados:', userData);
+
+      // AVISO: Aquí es donde iría la lógica para enviar 'userData' a Google Spreadsheet.
+      // Esta funcionalidad no puede ser implementada directamente por mí.
+      // Necesitarías un backend o Google Apps Script para manejar esto.
+      // Ejemplo (pseudocódigo, no funcional aquí):
+      // fetch('URL_DE_TU_SCRIPT_O_API_DE_GOOGLE_SHEETS', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(userData),
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //   console.log('Respuesta del servidor:', data);
+      //   alert('Registro exitoso. ¡Iniciando el autodiagnóstico!');
+      //   // Ocultar formulario y mostrar cuestionario
+      //   registrationFormContainer.style.display = 'none';
+      //   questionnaireContainer.style.display = 'block';
+      //   renderQuestion(); // Iniciar el cuestionario
+      // })
+      // .catch((error) => {
+      //   console.error('Error al enviar datos:', error);
+      //   alert('Hubo un error al registrar tus datos. Por favor, inténtalo de nuevo.');
+      // });
+
+
+      // Simulación de envío exitoso y paso al cuestionario
+      alert('¡Registro exitoso! Iniciando el autodiagnóstico.');
+      registrationFormContainer.style.display = 'none';
+      questionnaireContainer.style.display = 'block';
+      renderQuestion(); // Iniciar el cuestionario
+
+
+    });
+
+
+    // Asegúrate de que los enlaces del header funcionen después de que el cuestionario sea visible
+    document.querySelectorAll('nav ul li a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Solo permitir la navegación si el cuestionario está visible
+            if (questionnaireContainer.style.display === 'block') {
+                const targetSectionId = this.getAttribute('href').substring(1); // Obtiene "section1", "section2", etc.
+                const sectionIndex = parseInt(targetSectionId.replace('section', '')) - 1; // Convierte a índice (0-basado)
+
+                // Actualiza el estado del cuestionario para ir a la sección seleccionada
+                currentSection = sectionIndex;
+                currentQuestion = 0; // Siempre ir a la primera pregunta de la sección
+                history = []; // Limpiar el historial al navegar desde el header
+
+                renderQuestion();
+                scrollToSection(targetSectionId); // Desplaza suavemente
+            } else {
+                alert('Por favor, completa el registro primero para acceder al cuestionario.');
+            }
+        });
+    });
+
+    // No llamar a renderQuestion() al inicio, ya que el formulario es lo primero
+    // renderQuestion(); // Esta línea debe eliminarse o comentarse
+  </script>
+</body>
+</html>
