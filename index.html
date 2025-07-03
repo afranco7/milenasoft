@@ -388,7 +388,7 @@ Reevalúa qué cargos requieren realmente una vinculación temporal.`,
           type: "yes_no",
           recommendations: {
             "Sí": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`,
-            "No": `Recomendaciones:
+            "No": `
 Ajusta todos los contratos vigentes para incluir una duración específica y clara.
 La ambigüedad da lugar a que el contrato se interprete como a término indefinido.`
           }
@@ -397,7 +397,7 @@ La ambigüedad da lugar a que el contrato se interprete como a término indefini
           text: "¿Los contratos a término fijo tienen una duración inicial inferior a 12 meses?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendaciones:
+            "Sí": `
 Considera realizar todas las prórrogas de manera formal y por escrito.
 Recuerda que en adelante desde la cuarta prórroga en adelante la duración no puede ser inferior a 1 año.
 Implementa un sistema de control que te alerte sobre la cantidad y duración de las prórrogas firmadas.
@@ -409,7 +409,7 @@ Evalúa la viabilidad de contratar directamente a término indefinido cuando no 
           text: "¿Contratas empleados por obra o labor determinada?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendaciones:
+            "Sí": `
 Verifica que la obra o labor esté claramente definida en el contrato, y que exista un vínculo evidente entre el objeto del contrato y una actividad clara, temporal y delimitada.
 Evita el uso del contrato por obra o labor para tareas permanentes o estructurales del negocio. Esto puede considerarse fraude laboral y conlleva la conversión del contrato a término indefinido.
 Fortalece tus procesos de control y seguimiento del objeto contratado, ya que ahora se exige mayor carga administrativa para justificar este tipo de vinculación.
@@ -429,7 +429,7 @@ Si requieres que el trabajador continúe con nuevas labores asociadas a otra obr
           text: "¿Tu empresa tiene más de 15 trabajadores?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Verifica que estás cumpliendo con la cuota mínima obligatoria conforme al número de trabajadores.
 Evalúa si te resulta más conveniente monetizar la cuota o vincular directamente al aprendiz, teniendo en cuenta el impacto económico y operativo.
 Asegúrate de formalizar correctamente el contrato de aprendizaje bajo los nuevos parámetros, según el cual ahora se considera como Contrato a término fijo especial.
@@ -474,7 +474,7 @@ Recomendaciones clave:
           text: "¿Cuál es el nivel anual de ingresos ordinarios de tu empresa?",
           type: "conditional_income", // This question type will trigger custom logic
           recommendations: {
-            "Microempresa_Menos10": `Recomendación: Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
+            "Microempresa_Menos10": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
 Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
 Se recomienda tener una guía interna sencilla que oriente la actuación frente a faltas, capacitar al personal encargado sobre cómo manejar estas situaciones, y siempre dejar evidencia escrita de las actuaciones, lo cual brinda respaldo jurídico y evita conflictos futuros.`,
             "Microempresa_Mas10": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
@@ -482,7 +482,7 @@ Donde obligatoriamente debes implementar un procedimiento formal para la imposic
 Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
 Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
 Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`,
-            "Pequeña_Menos10": `Recomendación: Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
+            "Pequeña_Menos10": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
 Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
 Se recomienda tener una guía interna sencilla que oriente la actuación frente a faltas, capacitar al personal encargado sobre cómo manejar estas situaciones, y siempre dejar evidencia escrita de las actuaciones, lo cual brinda respaldo jurídico y evita conflictos futuros.`,
             "Pequeña_Mas10": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
@@ -506,7 +506,7 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
           text: "¿Tienes menos de 10 trabajadores?", // This question will only be shown conditionally
           type: "yes_no_conditional",
           recommendations: {
-            "Sí": `Recomendación: Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
+            "Sí": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
 Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
 Se recomienda tener una guía interna sencilla que oriente la actuación frente a faltas, capacitar al personal encargado sobre cómo manejar estas situaciones, y siempre dejar evidencia escrita de las actuaciones, lo cual brinda respaldo jurídico y evita conflictos futuros.`,
             "No": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
@@ -542,7 +542,7 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
           text: "¿Tienes trabajadores que laboran después de las 7:00 p.m.?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Verifica que estás pagando correctamente los recargos nocturnos, que ahora inician a las 7:00 p.m.
 Si tienes personal en turnos nocturnos permanentes, asegúrate de que el tiempo de descanso compensatorio esté claramente establecido y se cumpla.
 Evalúa la viabilidad de reorganizar los turnos para optimizar los costos de recargos nocturnos, si es posible sin afectar la operación.`,
@@ -553,7 +553,7 @@ Evalúa la viabilidad de reorganizar los turnos para optimizar los costos de rec
           text: "¿Tienes trabajadores que laboran domingos o festivos?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Asegúrate de pagar el recargo del 100% por trabajo dominical o festivo, según lo establece la nueva ley.
 Implementa un sistema de control para registrar y calcular con precisión las horas trabajadas en domingos y festivos.
 Informa claramente a los trabajadores sobre el cambio en el recargo dominical y festivo.`,
@@ -564,7 +564,7 @@ Informa claramente a los trabajadores sobre el cambio en el recargo dominical y 
           text: "¿Tu empresa requiere flexibilidad horaria para algunos trabajadores, como madres o padres cabeza de familia?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Diseña políticas claras para flexibilizar la jornada laboral de trabajadores con responsabilidades del cuidado.
 Establece horarios flexibles, trabajo a distancia, o jornadas reducidas, que permitan conciliar la vida laboral y familiar.
 Asegúrate de que estas medidas sean voluntarias y no afecten los derechos laborales.
@@ -576,11 +576,11 @@ Comunica las opciones de flexibilidad a tus empleados y capacita a los líderes 
           text: "¿Estás aplicando el régimen de jornada flexible de 42 horas semanales?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Continúa aplicando la reducción gradual de la jornada laboral.
 Asegúrate de que el promedio de horas semanales no supere las 42 horas en un período de hasta tres (3) semanas.
 Mantén una comunicación clara con tus trabajadores sobre el cronograma de reducción y los ajustes en sus jornadas.`,
-            "No": `Recomendación:
+            "No": `
 Evalúa la viabilidad de implementar la jornada flexible de 42 horas semanales en tu empresa.
 Define un cronograma claro para la reducción gradual de la jornada.
 Comunica los beneficios y las implicaciones de esta medida a tus trabajadores.`
@@ -596,7 +596,7 @@ Comunica los beneficios y las implicaciones de esta medida a tus trabajadores.`
           text: "¿Tienes mujeres embarazadas o en período de lactancia trabajando en tu empresa?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Garantiza el fuero de maternidad desde el momento de la concepción y durante el embarazo y la lactancia.
 No puedes despedir a una mujer embarazada o en lactancia sin autorización del Ministerio del Trabajo, salvo en casos de justa causa probada.
 Asegúrate de brindar todas las garantías y facilidades para el período de lactancia.
@@ -608,12 +608,12 @@ Capacita a tus líderes y personal de RRHH sobre el alcance del fuero de materni
           text: "¿Tu empresa cuenta con personas en situación de discapacidad?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Asegúrate de que estás cumpliendo con la cuota de vinculación obligatoria si tienes más de 20 trabajadores.
 Garantiza la inclusión laboral de personas con discapacidad, brindando ajustes razonables en el puesto de trabajo.
 Elimina cualquier barrera física, tecnológica o actitudinal que impida su plena participación.
 Promueve un ambiente de trabajo inclusivo y de respeto.`,
-            "No": `Recomendación:
+            "No": `
 Considera la posibilidad de incorporar personas en situación de discapacidad en tu equipo de trabajo.
 Infórmate sobre los beneficios y exenciones fiscales por la vinculación de personas con discapacidad.
 Capacita a tu personal para promover un ambiente inclusivo.`
@@ -623,11 +623,11 @@ Capacita a tu personal para promover un ambiente inclusivo.`
           text: "¿Tu empresa tiene trabajadores sindicalizados o existe un sindicato en la empresa?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Respeta el derecho de asociación sindical y de negociación colectiva.
 Garantiza la protección del fuero sindical de los trabajadores.
 Mantén un diálogo abierto y constructivo con las organizaciones sindicales.`,
-            "No": `Recomendación:
+            "No": `
 Respeta el derecho de asociación sindical de tus trabajadores, incluso si no tienen sindicato.
 Evita cualquier práctica antisindical.
 Promueve un ambiente de respeto y diálogo con tus trabajadores.`
@@ -637,12 +637,12 @@ Promueve un ambiente de respeto y diálogo con tus trabajadores.`
           text: "¿Tu empresa tiene una política de equidad de género o busca promover la igualdad en el trabajo?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Actualiza tu política de equidad de género para incluir los nuevos principios de igualdad salarial y no discriminación.
 Revisa y ajusta los procesos de selección, promoción y remuneración para asegurar la igualdad de oportunidades.
 Implementa acciones afirmativas para corregir desigualdades históricas.
 Capacita a tus líderes y empleados sobre la importancia de la equidad de género.`,
-            "No": `Recomendación:
+            "No": `
 Considera implementar una política de equidad de género en tu empresa.
 La nueva ley promueve la igualdad salarial y la no discriminación.
 La equidad de género mejora el ambiente laboral y la productividad.`
@@ -658,7 +658,7 @@ La equidad de género mejora el ambiente laboral y la productividad.`
           text: "¿Tu empresa contrata servicios con empresas de tercerización o intermediación laboral?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Revisa cuidadosamente tus contratos con empresas de tercerización para asegurar que cumplen con la nueva normativa.
 Asegúrate de que no se esté incurriendo en intermediación laboral ilegal, especialmente si el personal tercerizado realiza funciones misionales permanentes.
 Verifica que las empresas contratistas cumplan con todas sus obligaciones laborales y de seguridad social.
@@ -687,7 +687,7 @@ Asesórate legalmente para evitar posibles demandas por existencia de relación 
           text: "¿Tienes trabajadores en modalidad de teletrabajo o estás considerando implementarlo?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Formaliza el teletrabajo mediante contrato escrito: Incluye condiciones específicas como la modalidad, lugar de ejecución, disponibilidad, medios tecnológicos, y controles sobre el cumplimiento.
 -Incluye cláusula de reversibilidad: El contrato debe establecer que el teletrabajo no es obligatorio para el trabajador, y que puede regresar a la modalidad presencial bajo ciertas condiciones acordadas.
 -Diseña o actualiza la política de teletrabajo: Debe contemplar la seguridad digital, manejo de la información, disponibilidad del trabajador, desconexión laboral, y cumplimiento del SG-SST.
@@ -703,7 +703,7 @@ Es obligatorio si el salario del teletrabajador es igual o inferior a 2 SMMLV. E
           text: "¿Estás utilizando o planeas utilizar plataformas digitales para la contratación de servicios (ej. apps de delivery, transporte)?",
           type: "yes_no",
           recommendations: {
-            "Sí": `Recomendación:
+            "Sí": `
 Revisa la nueva regulación sobre trabajadores de plataformas digitales, que establece una presunción de laboralidad.
 Asegúrate de que la relación contractual con los trabajadores de plataformas cumpla con las nuevas exigencias laborales y de seguridad social.
 Considera la posibilidad de establecer contratos laborales directos si las características de la relación indican subordinación.
