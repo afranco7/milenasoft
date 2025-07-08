@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Consultoría Reforma Laboral 2025</title>
   <style>
-    /* Estilos del archivo html claude.html */
+    /* Estilos base */
     * {
       margin: 0;
       padding: 0;
@@ -13,13 +14,19 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', sans-serif;
+      /* Usando Inter como se recomienda */
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
     .container {
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
@@ -121,31 +128,38 @@
       background: #e0e0e0;
     }
 
-    .section-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+    /* Estilos para la nueva pantalla de secciones */
+    .sections-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .section-btn {
-      background: white;
-      border: 2px solid #667eea;
-      color: #1a237e;
-      padding: 20px;
-      border-radius: 12px;
-      cursor: pointer;
+    .sections-list p {
+      background: #f8f9ff;
+      border: 1px solid #e0e0e0;
+      padding: 15px;
+      border-radius: 8px;
+      color: #333;
+      font-size: 1.1em;
+      font-weight: 500;
+      text-align: left;
       transition: all 0.3s ease;
-      text-align: center;
-      font-weight: 600;
-      font-size: 16px;
     }
 
-    .section-btn:hover {
-      background: #667eea;
-      color: white;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    .sections-list p:hover {
+      border-color: #667eea;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Estilos para el título de la norma y sección en la pantalla de preguntas */
+    .section-and-norm-title {
+      background: #f8f9ff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
     }
 
     .question-container {
@@ -233,14 +247,22 @@
       color: #666;
     }
 
-    .success-message {
-      background: #e8f5e8;
-      color: #2e7d32;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border-left: 4px solid #4caf50;
+    /* Estilos para la pantalla de completado */
+    #completion-screen {
+      text-align: center;
+      padding: 40px;
     }
+
+    #completion-screen h2 {
+      font-size: 2em;
+      margin-bottom: 15px;
+    }
+
+    #completion-screen p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
 
     @media (max-width: 768px) {
       .container {
@@ -252,6 +274,7 @@
       }
 
       .section-buttons {
+        /* This rule is now deprecated for sections-overview-screen */
         grid-template-columns: 1fr;
       }
 
@@ -263,677 +286,887 @@
         flex-direction: column;
         gap: 10px;
       }
+
+      .sections-list {
+        gap: 8px;
+      }
+
+      .sections-list p {
+        padding: 12px;
+        font-size: 1em;
+      }
     }
   </style>
 </head>
+
 <body>
-<div class="container">
-  <div class="header">
-    <h1>Reforma Laboral 2025</h1>
-    <p>Ley 2466 de 2025 - Consultoría Jurídica Especializada</p>
-  </div>
-
-  <div id="initial-screen" class="card">
-    <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;"> ¿Ya sabes cómo afecta a tu empresa la nueva Reforma Laboral (Ley 2466 de 2025)? </h2>
-    <p style="text-align: center; margin-bottom: 30px; color: #666; font-size: 1.1em;"> Consulta gratis aquí y descubre los ajustes necesarios para tu empresa </p>
-    <form id="user-form">
-      <div class="form-group">
-        <label for="nombre">Nombre Completo *</label>
-        <input type="text" id="nombre" name="nombre" required>
-      </div>
-      <div class="form-group">
-        <label for="telefono">Teléfono *</label>
-        <input type="tel" id="telefono" name="telefono" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Correo Electrónico *</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div style="text-align: center;">
-        <button type="submit" class="btn">Consultar</button>
-      </div>
-    </form>
-  </div>
-
-  <div id="sections-screen" class="card hidden">
-    <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;"> Selecciona la sección que deseas consultar </h2>
-    <p style="text-align: center; margin-bottom: 30px; color: #666;"> Elige el área que mejor se adapte a las necesidades de tu empresa </p>
-    <div class="section-buttons">
-      <button class="section-btn" onclick="startSection(0)"> <strong>Sección 1</strong><br> Contratación Laboral </button>
-      <button class="section-btn" onclick="startSection(1)"> <strong>Sección 2</strong><br> Contrato de Aprendizaje </button>
-      <button class="section-btn" onclick="startSection(2)"> <strong>Sección 3</strong><br> Procesos Disciplinarios y RIT </button>
-      <button class="section-btn" onclick="startSection(3)"> <strong>Sección 4</strong><br> Jornadas y Recargos </button>
-      <button class="section-btn" onclick="startSection(4)"> <strong>Sección 5</strong><br> Inclusión y Diversidad </button>
-      <button class="section-btn" onclick="startSection(5)"> <strong>Sección 6</strong><br> Tercerización Laboral </button>
-      <button class="section-btn" onclick="startSection(6)"> <strong>Sección 7</strong><br> Nuevas Formas de Prestación del Servicio </button>
+  <div class="container">
+    <div class="header">
+      <h1>Reforma Laboral 2025</h1>
+      <p>Ley 2466 de 2025 - Consultoría Jurídica Especializada</p>
     </div>
-  </div>
 
-  <div id="questions-screen" class="card hidden">
-    <div class="progress-bar">
-      <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
-    </div>
-    <div class="question-container">
-      <h3 id="question-text" class="question-title"></h3>
-      <div id="options-container" class="options-container">
+    <div id="initial-screen" class="card">
+      <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;"> ¿Ya sabes cómo afecta a tu empresa la nueva
+        Reforma Laboral (Ley 2466 de 2025)? </h2>
+      <p style="text-align: center; margin-bottom: 30px; color: #666; font-size: 1.1em;"> Consulta gratis aquí y
+        descubre los ajustes necesarios para tu empresa </p>
+      <form id="user-form">
+        <div class="form-group">
+          <label for="nombre">Nombre Completo *</label>
+          <input type="text" id="nombre" name="nombre" required>
         </div>
-      <div id="recommendation" class="recommendation hidden">
-        <h4>Recomendación:</h4>
-        <p id="recommendation-text"></p>
+        <div class="form-group">
+          <label for="telefono">Teléfono *</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo Electrónico *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div style="text-align: center;">
+          <button type="submit" class="btn">Consultar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="sections-overview-screen" class="card hidden">
+      <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;"> Autodiagnóstico de la Reforma Laboral 2025
+      </h2>
+      <p style="text-align: center; margin-bottom: 30px; color: #666;">
+        Te guiaremos a través de las secciones clave de la nueva Ley 2466 de 2025.
+        Al finalizar, recibirás recomendaciones personalizadas para tu empresa.
+      </p>
+      <div id="sections-list" class="sections-list">
+        <!-- Los títulos de las secciones se insertarán aquí dinámicamente -->
+      </div>
+      <div style="text-align: center; margin-top: 30px;">
+        <button id="start-autodiagnosis-btn" class="btn">Iniciar mi autodiagnóstico</button>
+        <button id="back-to-initial-btn" class="btn btn-secondary" style="margin-left: 10px;">Volver</button>
       </div>
     </div>
-    <div class="navigation">
-      <button id="back-btn" class="btn btn-secondary" onclick="previousQuestion()">Volver</button>
-      <button id="next-btn" class="btn" onclick="nextQuestion()">Siguiente</button>
+
+    <div id="questions-screen" class="card hidden">
+      <div class="section-and-norm-title">
+        <h2 id="norm-title" style="color: #5e35b1; font-size: 1.5em; margin-bottom: 5px;">Reforma Laboral 2025</h2>
+        <h3 id="current-section-title" style="color: #1a237e; font-size: 1.2em;"></h3>
+      </div>
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+      </div>
+      <div class="question-container">
+        <h3 id="question-text" class="question-title"></h3>
+        <div id="options-container" class="options-container">
+        </div>
+        <div id="recommendation" class="recommendation hidden">
+          <h4>Recomendación:</h4>
+          <p id="recommendation-text"></p>
+        </div>
+      </div>
+      <div class="navigation">
+        <button id="back-btn" class="btn btn-secondary" onclick="previousQuestion()">Volver</button>
+        <button id="next-btn" class="btn" onclick="nextQuestion()">Siguiente</button>
+      </div>
     </div>
+
+    <div id="completion-screen" class="card hidden">
+      <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;">¡Autodiagnóstico Completado!</h2>
+      <p style="text-align: center; margin-bottom: 30px; color: #666;">
+        Has completado todas las secciones del autodiagnóstico.
+        Pronto recibirás un resumen detallado de tus recomendaciones personalizadas en tu correo electrónico.
+      </p>
+      <div style="text-align: center;">
+        <button class="btn" onclick="showInitialScreen()">Volver al Inicio</button>
+      </div>
+    </div>
+
   </div>
-</div>
 
-<script>
-  let currentSectionIndex = 0;
-  let currentQuestionIndex = 0;
-  let history = []; // Para almacenar el historial de preguntas y respuestas
-  let selectedAnswer = null;
-  let companyClassification = null; // Para almacenar la clasificación de la empresa en Sección 3
+  <script>
+    let currentSectionIndex = 0;
+    let currentQuestionIndex = 0;
+    let history = []; // Para almacenar el historial de preguntas y respuestas
+    let selectedAnswer = null;
+    let companyClassification = null; // Para almacenar la clasificación de la empresa en Sección 3
 
-  const initialScreen = document.getElementById('initial-screen');
-  const sectionsScreen = document.getElementById('sections-screen');
-  const questionsScreen = document.getElementById('questions-screen');
-  const userForm = document.getElementById('user-form');
-  const questionTextElement = document.getElementById('question-text');
-  const optionsContainer = document.getElementById('options-container');
-  const recommendationDiv = document.getElementById('recommendation');
-  const recommendationTextElement = document.getElementById('recommendation-text');
-  const backBtn = document.getElementById('back-btn');
-  const nextBtn = document.getElementById('next-btn');
-  const progressBarFill = document.getElementById('progress-fill');
+    const initialScreen = document.getElementById('initial-screen');
+    const sectionsOverviewScreen = document.getElementById('sections-overview-screen'); // Renombrado
+    const sectionsList = document.getElementById('sections-list'); // Nuevo elemento para la lista de secciones
+    const startAutodiagnosisBtn = document.getElementById('start-autodiagnosis-btn'); // Nuevo botón
+    const backToInitialBtn = document.getElementById('back-to-initial-btn'); // Botón para volver desde el overview de secciones
+    const questionsScreen = document.getElementById('questions-screen');
+    const userForm = document.getElementById('user-form');
+    const questionTextElement = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const recommendationDiv = document.getElementById('recommendation');
+    const recommendationTextElement = document.getElementById('recommendation-text');
+    const backBtn = document.getElementById('back-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressBarFill = document.getElementById('progress-fill');
+    const currentSectionTitleElement = document.getElementById('current-section-title'); // Nuevo elemento para el título de la sección
+    const completionScreen = document.getElementById('completion-screen'); // Nueva pantalla de completado
 
-  // Datos de las secciones y preguntas extraídos del DOCX
-  const sectionsData = [
-    // SECCIÓN 1: CONTRATACIÓN LABORAL
-    {
-      title: "Contratación Laboral",
-      questions: [
-        {
-          text: "¿Todos los contratos laborales en tu empresa están formalizados por escrito y firmados por ambas partes?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `Con la entrada en vigor de la Ley 2466 de 2025, es necesario actualizar la minuta del contrato laboral para alinearla con los nuevos requerimientos legales. Es fundamental revisar si hubo cambios en la jornada inicialmente pactada, y definir claramente cuál será el día de descanso obligatorio del trabajador.
-Además, se deben establecer las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia. También es recomendable incluir cláusulas que delimiten los requisitos formales de solicitud y justificación de los nuevos permisos laborales, tales como: Asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido. Finalmente, se debe considerarse la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la nueva ley.`,
-            "No": `Formaliza por escrito todos los contratos laborales sin excepción. La ley presume contrato a término indefinido si no hay documento firmado.
-Recomendaciones clave:
-Redacta y firma contratos con cada trabajador.
-Define tipo de contrato, duración y jornada.
-Pacta por escrito el día de descanso obligatorio.
-Establece las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
-Incluye cláusulas que delimiten los requisitos formales de solicitud y justificación de los nuevos permisos laborales, tales como: asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido.
-Considera la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la ley.
-Entrega copia firmada y guarda soporte.`
-          }
-        },
-        {
-          text: "¿Tu empresa tiene actualmente trabajadores contratados a término fijo?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `Puedes mantener la vinculación a plazo fijo por cuatro (4) años más, hasta 25 de junio de 2029, de esa fecha en adelante inmediatamente se convierte en indefinido.
-Verifica que todos los contratos estén por escrito y con indicación clara de la fecha de inicio y fin.
-Controla las fechas para evitar prórrogas automáticas no deseadas, en adelante preferiblemente realiza las prórrogas por escrito.
-Verifica cuántas prórrogas han tenido los contratos hasta la fecha, evalúa cuáles cargos requieren continuidad y la posibilidad de replantear su modelo a contratos indefinidos lo cual puedes hacer mediante otrosí.
-Reevalúa qué cargos requieren realmente una vinculación temporal.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        },
-        {
-          text: "¿Los contratos a término fijo indican de forma clara la duración exacta del vínculo laboral?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`,
-            "No": `
-Ajusta todos los contratos vigentes para incluir una duración específica y clara.
-La ambigüedad da lugar a que el contrato se interprete como a término indefinido.`
-          }
-        },
-        {
-          text: "¿Los contratos a término fijo tienen una duración inicial inferior a 12 meses?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Considera realizar todas las prórrogas de manera formal y por escrito.
-Recuerda que en adelante desde la cuarta prórroga en adelante la duración no puede ser inferior a 1 año.
-Implementa un sistema de control que te alerte sobre la cantidad y duración de las prórrogas firmadas.
-Evalúa la viabilidad de contratar directamente a término indefinido cuando no este justificada la duración temporal del contrato.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        },
-        {
-          text: "¿Contratas empleados por obra o labor determinada?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Verifica que la obra o labor esté claramente definida en el contrato, y que exista un vínculo evidente entre el objeto del contrato y una actividad clara, temporal y delimitada.
-Evita el uso del contrato por obra o labor para tareas permanentes o estructurales del negocio. Esto puede considerarse fraude laboral y conlleva la conversión del contrato a término indefinido.
-Fortalece tus procesos de control y seguimiento del objeto contratado, ya que ahora se exige mayor carga administrativa para justificar este tipo de vinculación.
-Revisa si el personal que actualmente tienes contratado bajo esta modalidad debe ser migrado a contratos a término indefinido, especialmente si desempeñan funciones misionales o de duración permanente.
-Revisa y documenta claramente la finalización de las actividades pactadas. Es fundamental dejar trazabilidad sobre el cierre de la obra o labor.
-Si requieres que el trabajador continúe con nuevas labores asociadas a otra obra o necesidad puntual, suscribe por escrito un nuevo contrato o amplía el anterior mediante otrosí especificando el nuevo objeto y duración.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        }
+    // Definición de los umbrales de ingresos por sector
+    const incomeThresholds = {
+      "industrial": [
+        { text: "Menor o igual a $1.173 millones", value: "industrial_micro", classification: "Microempresa" },
+        { text: "Mayor a $1.173 millones y hasta $10.212 millones", value: "industrial_pequena", classification: "Pequeña" },
+        { text: "Mayor a $10.212 millones y hasta $86.517 millones", value: "industrial_mediana", classification: "Mediana" },
+        { text: "Mayor a $86.517 millones", value: "industrial_gran", classification: "Gran" }
+      ],
+      "servicios": [
+        { text: "Menor o igual a $1.642 millones", value: "servicios_micro", classification: "Microempresa" },
+        { text: "Entre $1.642 y $6.575 millones", value: "servicios_pequena", classification: "Pequeña" },
+        { text: "Entre $6.575 y $24.060 millones", value: "servicios_mediana", classification: "Mediana" },
+        { text: "Mayor a $24.060 millones", value: "servicios_gran", classification: "Gran" }
+      ],
+      "comercio": [
+        { text: "Menor o igual a $2.229 millones", value: "comercio_micro", classification: "Microempresa" },
+        { text: "Entre $2.229 y $21.480 millones", value: "comercio_pequena", classification: "Pequeña" },
+        { text: "Entre $21.480 y $107.566 millones", value: "comercio_mediana", classification: "Mediana" },
+        { text: "Mayor a $107.566 millones", value: "comercio_gran", classification: "Gran" }
       ]
-    },
-    // SECCIÓN 2: CONTRATO DE APRENDIZAJE
-    {
-      title: "Contrato de Aprendizaje",
-      questions: [
-        {
-          text: "¿Tu empresa tiene más de 15 trabajadores?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Verifica que estás cumpliendo con la cuota mínima obligatoria conforme al número de trabajadores.
-Evalúa si te resulta más conveniente monetizar la cuota o vincular directamente al aprendiz, teniendo en cuenta el impacto económico y operativo.
-Asegúrate de formalizar correctamente el contrato de aprendizaje bajo los nuevos parámetros, según el cual ahora se considera como Contrato a término fijo especial.
-Mantén registros actualizados y certificados del tiempo en práctica, ya que ahora se reconoce como experiencia laboral.
-Evalúa la viabilidad de implementar la modalidad de formación dual, que integra teoría y práctica de manera simultánea con acompañamiento conjunto entre la empresa y el Sena.
-Esta modalidad te ayuda a formar nuevos talentos alineado a las necesidades reales del negocio, ya que la empresa participa activamente en el diseño del plan formativo del aprendiz.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+    };
+
+    // Datos de las secciones y preguntas extraídos del DOCX
+    const sectionsData = [
+      // SECCIÓN 1: CONTRATACIÓN LABORAL
+      {
+        title: "Contratación Laboral",
+        questions: [
+          {
+            text: "¿Todos los contratos laborales en tu empresa están formalizados por escrito y firmados por ambas partes?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `Con la entrada en vigor de la Ley 2466 de 2025, es necesario actualizar la minuta del contrato laboral para alinearla con los nuevos requerimientos legales. Es fundamental revisar si hubo cambios en la jornada inicialmente pactada, y definir claramente cuál será el día de descanso obligatorio del trabajador.
+                    Además, se deben establecer las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
+                    También es recomendable incluir cláusulas que delimiten los requisitos formales de solicitud y justificación de los nuevos permisos laborales, tales como: Asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido. Finalmente, se debe considerarse la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la nueva ley.`,
+              "No": `Formaliza por escrito todos los contratos laborales sin excepción. La ley presume contrato a término indefinido si no hay documento firmado.
+                    Recomendaciones clave:
+                    1. Redacta y firma contratos con cada trabajador.
+                    2. Define tipo de contrato, duración y jornada.
+                    3. Pacta por escrito el día de descanso obligatorio.
+                    4. Establece las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
+                    5. Incluye cláusulas que delimiten los requisitos formal es de solicitud y justificación de los nuevos permisos laborales, tales como: asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido.
+                    6. Considera la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la ley.
+                    7. Entrega copia firmada y guarda soporte.`
+            }
+          },
+          {
+            text: "¿Tu empresa tiene actualmente trabajadores contratados a término fijo?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    1. Puedes mantener la vinculación a plazo fijo por cuatro (4) años más, hasta 25 de junio de 2029, de esa fecha en adelante inmediatamente se convierte en indefinido.
+                    2. Verifica que todos los contratos estén por escrito y con indicación clara de la fecha de inicio y fin.
+                    3. Controla las fechas para evitar prórrogas automáticas no deseadas, en adelante preferiblemente realiza las prórrogas por escrito.
+                    4. Verifica cuántas prórrogas han tenido los contratos hasta la fecha, evalúa cuáles cargos requieren continuidad y la posibilidad de replantear su modelo a contratos indefinidos lo cual puedes hacer mediante otrosí.
+                    5. Reevalúa qué cargos requieren realmente una vinculación temporal.`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Los contratos a término fijo indican de forma clara la duración exacta del vínculo laboral?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`,
+              "No": `
+                    Ajusta todos los contratos vigentes para incluir una duración específica y clara. La ambigüedad da lugar a que el contrato se interprete como a término indefinido.`
+            }
+          },
+          {
+            text: "¿Los contratos a término fijo tienen una duración inicial inferior a 12 meses?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    1. Considera realizar todas las prórrogas de manera formal y por escrito.
+                    2. Recuerda que en adelante desde la cuarta prórroga en adelante la duración no puede ser inferior a 1 año.
+                    3. Implementa un sistema de control que te alerte sobre la cantidad y duración de las prórrogas firmadas.
+                    4. Evalúa la viabilidad de contratar directamente a término indefinido cuando no este justificada la duración temporal del contrato.`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Contratas empleados por obra o labor determinada?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    1. Verifica que la obra o labor esté claramente definida en el contrato, y que exista un vínculo evidente entre el objeto del contrato y una actividad clara, temporal y delimitada.
+                    2. Evita el uso del contrato por obra o labor para tareas permanentes o estructurales del negocio. Esto puede considerarse fraude laboral y conlleva la conversión del contrato a término indefinido.
+                    3. Fortalece tus procesos de control y seguimiento del objeto contratado, ya que ahora se exige mayor carga administrativa para justificar este tipo de vinculación.
+                    4. Revisa si el personal que actualmente tienes contratado bajo esta modalidad debe ser migrado a contratos a término indefinido, especialmente si desempeñan funciones misionales o de duración permanente.
+                    5. Revisa y documenta claramente la finalización de las actividades pactadas. Es fundamental dejar trazabilidad sobre el cierre de la obra o labor.
+                    6. Si requieres que el trabajador continúe con nuevas labores asociadas a otra obra o necesidad puntual, suscribe por escrito un nuevo contrato o amplía el anterior mediante otrosí especificando el nuevo objeto y duración.`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
           }
-        },
-        {
-          text: "¿Tu empresa tiene o planea contratar trabajadores extranjeros?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `Debes tener en cuenta los cambios introducidos por la reforma laboral respecto a trabajadores migrantes:
-Recomendaciones clave:
-- Garantiza igualdad de derechos laborales y de seguridad social a las personas extranjeras, sin importar su estatus migratorio.
-- Ya no necesitas una visa de trabajo previa, por lo cual una vez se haya suscrito el contrato de trabajo, ponte en contacto con Migración Colombia quien debe facilitar el proceso de regularización migratoria.
-- Mantente atento a la reglamentación que expedirá el Ministerio de Relaciones Exteriores sobre el proceso de regularización.
-- Cumple con las obligaciones de reporte vigentes:
-  - Notificar a Migración Colombia el inicio, terminación o cualquier novedad del contrato laboral con extranjeros, a través de la plataforma SIRE.
-  - Reportar ante el Ministerio del Trabajo el inicio y terminación del contrato a través del RUTEC.
-- Evalúa la posibilidad de aplicar el teletrabajo transnacional, si la naturaleza del cargo permite desarrollar el trabajo a distancia.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+        ]
+      },
+      // SECCIÓN 2: CONTRATO DE APRENDIZAJE
+      {
+        title: "Contrato de Aprendizaje",
+        questions: [
+          {
+            text: "¿Tu empresa tiene más de 15 trabajadores?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    1. Verifica que estás cumpliendo con la cuota mínima obligatoria conforme al número de trabajadores.
+                    2. Evalúa si te resulta más conveniente monetizar la cuota o vincular directamente al aprendiz, teniendo en cuenta el impacto económico y operativo.
+                    3. Asegúrate de formalizar correctamente el contrato de aprendizaje bajo los nuevos parámetros, según el cual ahora se considera como Contrato a término fijo especial.
+                    4. Mantén registros actualizados y certificados del tiempo en práctica, ya que ahora se reconoce como experiencia laboral.
+                    5. Evalúa la viabilidad de implementar la modalidad de formación dual, que integra teoría y práctica de manera simultánea con acompañamiento conjunto entre la empresa y el Sena. Esta modalidad te ayuda a formar nuevos talentos alineado a las necesidades reales del negocio, ya que la empresa participa activamente en el diseño del plan formativo del aprendiz.`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Tu empresa tiene o planea contratar trabajadores extranjeros?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `Debes tener en cuenta los cambios introducidos por la reforma laboral respecto a trabajadores migrantes:
+                    Recomendaciones clave:
+                    1. Garantiza igualdad de derechos laborales y de seguridad social a las personas extranjeras, sin importar su estatus migratorio.
+                    2. Ya no necesitas una visa de trabajo previa, por lo cual una vez se haya suscrito el contrato de trabajo, ponte en contacto con Migración Colombia quien debe facilitar el proceso de regularización migratoria.
+                    3. Mantente atento a la reglamentación que expedirá el Ministerio de Relaciones Exteriores sobre el proceso de regularización.
+                    4. Cumple con las obligaciones de reporte vigentes:
+                    4.1 Notificar a Migración Colombia el inicio, terminación o cualquier novedad del contrato laboral con extranjeros, a través de la plataforma SIRE.
+                    4.2 Reportar ante el Ministerio del Trabajo el inicio y terminación del contrato a través del RUTEC.
+                    5. Evalúa la posibilidad de aplicar el teletrabajo transnacional, si la naturaleza del cargo permite desarrollar el trabajo a distancia.`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
           }
-        }
-      ]
-    },
-    // SECCIÓN 3: PROCESOS DISCIPLINARIOS Y RIT
-    {
-      title: "Procesos Disciplinarios y RIT",
-      questions: [
-        {
-          text: "¿A qué sector pertenece tu empresa?",
-          type: "multiple_choice",
-          options: [
-            { text: "Sector manufacturero, agropecuario o industrial", value: "industrial" },
-            { text: "Sector servicios", value: "servicios" },
-            { text: "Sector de comercio", value: "comercio" }
-          ]
-        },
-        {
-          text: "¿Cuál es el nivel anual de ingresos ordinarios de tu empresa?",
-          type: "conditional_income", // This question type will trigger custom logic
-          recommendations: {
-            "Microempresa_Menos10": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
+        ]
+      },
+      // SECCIÓN 3: PROCESOS DISCIPLINARIOS Y RIT
+      {
+        title: "Procesos Disciplinarios y RIT",
+        questions: [
+          {
+            text: "¿A qué sector pertenece tu empresa?",
+            type: "multiple_choice",
+            options: [
+              { text: "Sector manufacturero, agropecuario o industrial", value: "industrial" },
+              { text: "Sector servicios", value: "servicios" },
+              { text: "Sector de comercio", value: "comercio" }
+            ]
+          },
+          {
+            text: "¿Cuál es el nivel anual de ingresos ordinarios de tu empresa?",
+            type: "conditional_income", // This question type will trigger custom logic
+            recommendations: {
+              // Estas recomendaciones son genéricas para la pregunta de ingresos
+              // La recomendación final para Micro/Pequeña se define después de la pregunta de empleados
+              "continue_to_next": `Por favor, continúa a la siguiente pregunta para una recomendación más precisa.`,
+              "Microempresa_Menos10": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
 Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
 Se recomienda tener una guía interna sencilla que oriente la actuación frente a faltas, capacitar al personal encargado sobre cómo manejar estas situaciones, y siempre dejar evidencia escrita de las actuaciones, lo cual brinda respaldo jurídico y evita conflictos futuros.`,
-            "Microempresa_Mas10": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
-Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
+              "Microempresa_Mas10": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT). Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
 Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
 Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
 Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`,
-            "Pequeña_Menos10": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
+              "Pequeña_Menos10": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
 Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
 Se recomienda tener una guía interna sencilla que oriente la actuación frente a faltas, capacitar al personal encargado sobre cómo manejar estas situaciones, y siempre dejar evidencia escrita de las actuaciones, lo cual brinda respaldo jurídico y evita conflictos futuros.`,
-            "Pequeña_Mas10": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
-Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
+              "Pequeña_Mas10": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT). Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
 Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
 Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
 Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`,
-            "Mediana": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
-Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
+              "Mediana": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT). Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
 Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
 Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
 Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`,
-            "Gran": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
-Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
+              "Gran": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT). Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
 Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
 Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
 Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`
-          }
-        },
-        {
-          text: "¿Tienes menos de 10 trabajadores?", // This question will only be shown conditionally
-          type: "yes_no_conditional",
-          recommendations: {
-            "Sí": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores.
-Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
+            }
+          },
+          {
+            text: "¿Tienes menos de 10 trabajadores?", // This question will only be shown conditionally
+            type: "yes_no_conditional",
+            recommendations: {
+              "Sí": `Las micro y pequeñas empresas con menos de diez (10) trabajadores no están obligadas a tener un Reglamento Interno de Trabajo (RIT), salvo que pertenezcan al sector comercio o superen ese número de trabajadores. Tampoco deben implementar un procedimiento disciplinario formal, pero sí deben garantizar un proceso básico de debido proceso antes de imponer sanciones, lo cual implica ofrecer al trabajador la oportunidad de ser escuchado, documentar los hechos y la decisión adoptada, actuar con proporcionalidad y evitar decisiones arbitrarias.
 Se recomienda tener una guía interna sencilla que oriente la actuación frente a faltas, capacitar al personal encargado sobre cómo manejar estas situaciones, y siempre dejar evidencia escrita de las actuaciones, lo cual brinda respaldo jurídico y evita conflictos futuros.`,
-            "No": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).
-Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
+              "No": `Tu empresa está obligada a contar con un Reglamento Interno de Trabajo (RIT).Donde obligatoriamente debes implementar un procedimiento formal para la imposición de sanciones disciplinarias, lo que incluye definir etapas claras de notificación, descargos, análisis y decisión.
 Este proceso debe estar contenido en el RIT y alinearse con el principio de debido proceso, garantizando al trabajador el derecho a ser escuchado y a controvertir las acusaciones.
 Se recomienda revisar o actualizar el RIT conforme a la reforma laboral vigente en un plazo no mayor a 12 meses, capacitar a los líderes sobre su aplicación, y asegurar la trazabilidad en cada actuación disciplinaria.
 Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios en tu empresa.`
+            }
+          },
+          {
+            text: "¿Tu empresa cuenta con un Reglamento Interno de Trabajo vigente y conocido por los trabajadores?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+              1. Asegúrate de actualizar el RIT conforme a las nuevas exigencias de la reforma laboral, en especial lo relacionado con el respeto a la dignidad humana, la no discriminación, los nuevos permisos remunerados, el día de descanso obligatorio, los requisitos para flexibilizar la jornada laboral a los trabajadores con responsabilidades del cuidado, las nuevas formas de trabajo a distancia. 
+              2. Publica el RIT en medios digitales accesibles que sean del control de la empresa. 
+              3. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`,
+              "No": `
+              1. Si tienes más de 10 empleados el RIT es obligatorio. Inicia el diseño del reglamento a la mayor brevedad posible. 
+              2. Publica el RIT en medios digitales accesibles que sean del control de la empresa. 
+              3. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`
+            }
+          },
+          {
+            text: "¿La empresa tiene políticas definidas para prevenir y sancionar el acoso y la violencia en el trabajo?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `Actualiza tus políticas para incorporar la ampliación del concepto de acoso y violencia en el trabajo de acuerdo con los parámetros nuevos que trae la reforma laboral.`,
+              "No": `Es obligatorio para todas las empresas contar con mecanismos de prevención del acoso laboral y acoso sexual en el trabajo. Implementa un comité de convivencia actualizado conforme a la Ley 1010 y la nueva reforma laboral. Integra perspectiva de género y canales confidenciales.`
+            }
           }
-        },
-        {
-          text: "¿Tu empresa cuenta con un Reglamento Interno de Trabajo vigente y conocido por los trabajadores?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `Asegúrate de actualizar el RIT conforme a las nuevas exigencias de la reforma laboral, en especial lo relacionado con el respeto a la dignidad humana, la no discriminación, los nuevos permisos remunerados, el día de descanso obligatorio, los requisitos para flexibilizar la jornada laboral a los trabajadores con responsabilidades del cuidado, las nuevas formas de trabajo a distancia. Publica el RIT en medios digitales accesibles que sean del control de la empresa. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`,
-            "No": `Si tienes más de 10 empleados el RIT es obligatorio. Inicia el diseño del reglamento a la mayor brevedad posible. Publica el RIT en medios digitales accesibles que sean del control de la empresa. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`
+        ]
+      },
+      // SECCIÓN 4: JORNADAS Y RECARGOS
+      {
+        title: "Jornadas y Recargos",
+        questions: [
+          {
+            text: "¿Tienes trabajadores que laboran después de las 7:00 p.m.?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    El recargo nocturno se mantiene en el 35% por hora labor, pero  desde el  25 de Diciembre de 2025, se aplicará desde las 7:00 p.m. hasta las 6:00 a.m., por lo cual debes implementar las siguientes acciones: 
+                    1. Actualizar sistemas de nómina para que se liquide el  recargo nocturno desde la hora correcta.
+                    2. Evaluar el impacto económico: Proyectar el aumento en los costos laborales y considerar posibles medidas de eficiencia operativa o redistribución de turnos.
+                    3. Capacitar al personal de talento humano y supervisores: Para asegurar que comprendan el nuevo esquema, puedan hacer seguimiento adecuado.
+                    4. Mantener registros claros de las jornadas y recargos pagados, ya que el Ministerio del Trabajo puede exigir soportes y aplicar sanciones en caso de incumplimiento.
+`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Tienes personal que labora domingos o festivos de manera ocasional o permanente?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    El tratamiento de estos días se ha unificado bajo el concepto de “día de descanso obligatorio”, y el recargo por trabajar en ellos se ajusta al 100% de manera progresiva:
+                    A partir del 1° de julio de 2025, subirá al 80%;
+                    desde el 1° de julio de 2026, será del 90%, 
+                    a partir del 1° de julio de 2027 será del 100%, 
+                    Aunque los empleadores pueden acogerse a este último desde ya si así lo deciden.
+                    1. Evalúa el impacto financiero de este incremento en tu nomina
+                    2. Evalúa la pertinencia de pactar (por escrito) que el día de descanso obligatorio sea distinto al domingo. 
+                    3. Capacitar a RRHH y supervisores para que puedan realizar un adecuado control a la rotación de los turno laborales, a fin de evitar conflictos legales.
+`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Tu empresa opera en jornadas continuas o turnos rotativos (24/7), incluyendo trabajo nocturno o fines de semana?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                  Debes prepararte para los impactos en costos laborales, asociados a: Reducción de la jornada laboral, aumento de recargos nocturnos, y aumento por trabajo en días de descanso obligatorio (antes domingos y festivos).
+                  Realiza una valoración financiera que permita medir el impacto y te ayude a tomar decisiones estratégicas, que pueden incluir la implementación de la jornada especial de turnos continuos de  6 horas diarias / 36 horas semanales, permitiendo operar la empresa 24/7 reduciendo el impacto económico de recargos nocturnos, o por trabajo en domingos o festivos.
+`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Tu empresa tiene trabajadores que laboran tiempo suplementario (horas extras)?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    1. Revisa si llevas un registro actualizado por trabajador y por tipo de hora (diurna/nocturna). Este registro debe incluir mínimo: Nombre, actividad desarrollada, número de horas y si son diurnas o nocturna. 
+                    2. Asegúrate de que el registro se mantenga actualizado, sea auditable y se entregue al trabajador si lo solicita, con comprobante de pago.
+                    3. Implementa inmediatamente un sistema confiable para controlar el número de horas extras que laboran tus empleados. 
+                    4. Realiza una auditoría interna urgente y asegúrate que tus empleados no laboren mas de 2 horas extras día y 12 a la semana.
+                    5. Verifica que las horas extras estén correctamente liquidadas y pagadas con sus recargos. Soporta estos pagos en la nómina y entrega comprobantes al trabajador. Un error de cálculo puede llevar a la suspensión de la facultad para trabajar horas extra por 6 meses y otras sanciones.
+                    6. Recuerda, ya no necesitas autorización previa para que tus empleados laboren hora extra.
+`,
+              "No": `
+                      En tu caso no se requieren ajustes adicionales derivados de la nueva norma. `
+            }
           }
-        },
-        {
-          text: "¿La empresa tiene políticas definidas para prevenir y sancionar el acoso y la violencia en el trabajo?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `Actualiza tus políticas para incorporar la ampliación del concepto de acoso y violencia en el trabajo de acuerdo con los parámetros nuevos que trae la reforma laboral.`,
-            "No": `Es obligatorio para todas las empresas contar con mecanismos de prevención del acoso laboral y acoso sexual en el trabajo. Implementa un comité de convivencia actualizado conforme a la Ley 1010 y la nueva reforma laboral. Integra perspectiva de género y canales confidenciales.`
+        ]
+      },
+      // SECCIÓN 5: INCLUSIÓN Y DIVERSIDAD
+      {
+        title: "Inclusión y Diversidad",
+        questions: [
+          {
+            text: "¿Tu empresa cuenta con 100 o más trabajadores permanentes?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    Evalúa cuántos trabajadores con discapacidad tienes vinculados y verifica si cumples con este mínimo obligatorio:
+                    •	Hasta 500 empleados: al menos 2 trabajadores con discapacidad por cada 100.
+                    •	Más de 500 empleados: los anteriores más 1 adicional por cada tramo de 100.
+                    Al momento de la vinculación asegura que los trabajadores con discapacidad cuenten con la certificación válida del Ministerio de Salud.
+                    Si existen razones técnicas o de salud ocupacional que impidan la contratación de personas en situación de discapacidad para determinados cargos documéntalo adecuadamente para que puedas informarlo al Ministerio del Trabajo.
+                    A partir del segundo año de entrada en vigencia de la reforma (julio de 2026), el cumplimiento de las cuotas de vinculación de personas con discapacidad será obligatorio. Por ello, es fundamental analizar desde ahora tu planta de cargos, identificar puestos viables para esta población, y planear con tiempo los ajustes razonables que permitan su contratación efectiva.
+                    Capacita al equipo de Recursos Humanos sobre las obligaciones de registro obligatorio de contratos en la plataforma del Ministerio del Trabajo, y sensibiliza a los líderes y supervisores sobre discapacidad e inclusión laboral, para que estén preparados para gestionar estos procesos de forma adecuada.
+`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Tienes en tu empresa trabajadores(as) que ejercen responsabilidades de cuidado sobre hijos menores, personas con discapacidad, mayores o con enfermedades graves dentro de su núcleo familiar?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    Debes estar preparado para recibir solicitudes de flexibilidad laboral conforme a la nueva regulación. Asegúrate de:
+                    1. Establecer un protocolo claro para evaluar solicitudes de flexibilización de la jornada laboral o implementación de teletrabajo.
+                    2. Cuando la recibas documenta adecuadamente la solicitud, la evaluación y la respuesta que se dé, la cual debe entregarse en un plazo máximo de 15 días hábiles.
+                    3. Incorporar como se regulará el ejercicio de este derecho en tu Reglamento Interno de Trabajo y contrato laboral.
+`,
+              "No": `Aunque hoy no tengas casos identificados, es recomendable:
+                    1. Incluir este tema en el diagnóstico de clima laboral o encuestas internas, para anticiparte.
+                    2. Actualizar políticas internas para estar preparado ante futuras solicitudes.
+                    3. Incorporar como se regulara este derecho en tu Reglamento Interno de Trabajo y contrato laboral. 
+`
+            }
+          },
+          {
+            text: "¿En tu empresa, existen diferencias en el valor del salario para hombres y mujeres aunque ocupen el mismo cargo?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    Debes tomar medidas inmediatas para cumplir con la nueva regulación:
+                    1. Realiza un diagnóstico de equidad salarial para identificar y justificar cualquier diferencia con base en criterios objetivos.
+                    2. Alinea los perfiles de cargo y documenta las razones técnicas detrás de cada diferenciación salarial.
+                    3. Diseña e implementa una política de equidad salarial que corrija y prevenga nuevas brechas salariales.
+`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
+          },
+          {
+            text: "¿Tu empresa tiene implementado un Comité de Convivencia Laboral y protocolos para prevenir, atender y sancionar el acoso laboral?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    Debes ajustar tus políticas actuales para cumplir con los nuevos lineamientos de la Ley 2466 de 2025, que amplían el alcance del acoso laboral y sexual. Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan  de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
+                    Además, debes integrar una perspectiva de género, con acciones específicas frente al acoso por razón de género y violencia sexual.
+                    Por último, asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan  un proceso claro para recibir, hacer seguimiento y atender las quejas.
+`,
+              "No": `
+                    Debes actuar de inmediato. No contar con Comité y protocolos te expone a sanciones y responsabilidades legales.
+                    1. Conforma el Comité de Convivencia Laboral de acuerdo con la normativa.
+                    2. Diseña una política de acoso laboral y una política de acoso sexual que cumpla con los nuevos lineamientos de la Ley 2466 de 2025, que amplía el alcance del acoso laboral y sexual. Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
+                    3. Asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan  un proceso claro para recibir, hacer seguimiento y atender las quejas.`
+            }
           }
-        }
-      ]
-    },
-    // SECCIÓN 4: JORNADAS Y RECARGOS
-    {
-      title: "Jornadas y Recargos",
-      questions: [
-        {
-          text: "¿Tienes trabajadores que laboran después de las 7:00 p.m.?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Verifica que estás pagando correctamente los recargos nocturnos, que ahora inician a las 7:00 p.m.
-Si tienes personal en turnos nocturnos permanentes, asegúrate de que el tiempo de descanso compensatorio esté claramente establecido y se cumpla.
-Evalúa la viabilidad de reorganizar los turnos para optimizar los costos de recargos nocturnos, si es posible sin afectar la operación.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+        ]
+      },
+      // SECCIÓN 6: TERCERIZACIÓN LABORAL
+      {
+        title: "Tercerización Laboral",
+        questions: [
+          {
+            text: "¿Tu empresa contrata personal a través de Empresas de Servicios Temporales (EST)?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    Debes revisar y ajustar tu estrategia de contratación indirecta, ya que la reforma laboral limita el uso de EST únicamente a las siguientes causales:
+                    •	Reemplazo de personal ausente temporalmente.
+                    •	Aumento ocasional de la producción.
+                    •	Labores transitorias que no excedan seis meses.
+                    Recomendaciones clave:
+                    1. Identifica claramente qué cargos o funciones son realmente temporales, como picos de producción, reemplazos por licencias u otras ausencias justificadas.
+                    2. Documenta la causa específica del encargo temporal tanto en el contrato comercial con la EST como en los contratos laborales de los trabajadores en misión.
+                    3. Verifica que los trabajadores en misión no estén desempeñando funciones estructurales o permanentes dentro de tu operación.
+                    4. Implementa controles internos para evitar exceder los límites legales de duración o causalidad.
+                    5. Evita la rotación de personal entre diferentes EST para las mismas funciones, ya que esto puede ser considerado intermediación laboral ilegal.
+                    6. Capacita a líderes y personal de RRHH sobre los riesgos legales y sanciones.
+`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
           }
-        },
-        {
-          text: "¿Tienes trabajadores que laboran domingos o festivos?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Asegúrate de pagar el recargo del 100% por trabajo dominical o festivo, según lo establece la nueva ley.
-Implementa un sistema de control para registrar y calcular con precisión las horas trabajadas en domingos y festivos.
-Informa claramente a los trabajadores sobre el cambio en el recargo dominical y festivo.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+        ]
+      },
+      // SECCIÓN 7: NUEVAS FORMAS DE PRESTACIÓN DEL SERVICIO
+      {
+        title: "Nuevas Formas de Prestación del Servicio",
+        questions: [
+          {
+            text: "¿Tienes trabajadores en modalidad de teletrabajo o estás considerando implementarlo?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": `
+                    1. Formaliza el teletrabajo mediante contrato escrito: Incluye condiciones específicas como la modalidad, lugar de ejecución, disponibilidad, medios tecnológicos, y controles sobre el cumplimiento.
+                    2. Incluye cláusula de reversibilidad: El contrato debe establecer que el teletrabajo no es obligatorio para el trabajador, y que puede regresar a la modalidad presencial bajo ciertas condiciones acordadas.
+                    3. Diseña o actualiza la política de teletrabajo: Debe contemplar la seguridad digital, manejo de la información, disponibilidad del trabajador, desconexión laboral, y cumplimiento del SG-SST.
+                    4. Paga el auxilio de conectividad digital:
+                      •	Es obligatorio si el salario del teletrabajador es igual o inferior a 2 SMMLV.
+                      •	Este auxilio reemplaza el auxilio de transporte en la modalidad remota o de teletrabajo.
+                    5. Evalúa el teletrabajo transnacional:
+                      •	Puedes implementarlo si las funciones se pueden desempeñar desde el exterior.
+                    6. Asegura la protección de la salud en el entorno remoto: Incluye al teletrabajador en la evaluación de riesgos del SG-SST y entrega recomendaciones sobre ergonomía, pausas activas y riesgos psicosociales.
+                    7. Implementa canales de reporte y control claros: Utiliza medios tecnológicos para documentar la jornada laboral, cumplimiento de funciones, y entrega de resultados.
+`,
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+            }
           }
-        },
-        {
-          text: "¿Tu empresa requiere flexibilidad horaria para algunos trabajadores, como madres o padres cabeza de familia?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Diseña políticas claras para flexibilizar la jornada laboral de trabajadores con responsabilidades del cuidado.
-Establece horarios flexibles, trabajo a distancia, o jornadas reducidas, que permitan conciliar la vida laboral y familiar.
-Asegúrate de que estas medidas sean voluntarias y no afecten los derechos laborales.
-Comunica las opciones de flexibilidad a tus empleados y capacita a los líderes para gestionarlas.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        },
-        {
-          text: "¿Estás aplicando el régimen de jornada flexible de 42 horas semanales?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Continúa aplicando la reducción gradual de la jornada laboral.
-Asegúrate de que el promedio de horas semanales no supere las 42 horas en un período de hasta tres (3) semanas.
-Mantén una comunicación clara con tus trabajadores sobre el cronograma de reducción y los ajustes en sus jornadas.`,
-            "No": `
-Evalúa la viabilidad de implementar la jornada flexible de 42 horas semanales en tu empresa.
-Define un cronograma claro para la reducción gradual de la jornada.
-Comunica los beneficios y las implicaciones de esta medida a tus trabajadores.`
-          }
-        }
-      ]
-    },
-    // SECCIÓN 5: INCLUSIÓN Y DIVERSIDAD
-    {
-      title: "Inclusión y Diversidad",
-      questions: [
-        {
-          text: "¿Tienes mujeres embarazadas o en período de lactancia trabajando en tu empresa?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Garantiza el fuero de maternidad desde el momento de la concepción y durante el embarazo y la lactancia.
-No puedes despedir a una mujer embarazada o en lactancia sin autorización del Ministerio del Trabajo, salvo en casos de justa causa probada.
-Asegúrate de brindar todas las garantías y facilidades para el período de lactancia.
-Capacita a tus líderes y personal de RRHH sobre el alcance del fuero de maternidad y las prohibiciones de despido.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        },
-        {
-          text: "¿Tu empresa cuenta con personas en situación de discapacidad?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Asegúrate de que estás cumpliendo con la cuota de vinculación obligatoria si tienes más de 20 trabajadores.
-Garantiza la inclusión laboral de personas con discapacidad, brindando ajustes razonables en el puesto de trabajo.
-Elimina cualquier barrera física, tecnológica o actitudinal que impida su plena participación.
-Promueve un ambiente de trabajo inclusivo y de respeto.`,
-            "No": `
-Considera la posibilidad de incorporar personas en situación de discapacidad en tu equipo de trabajo.
-Infórmate sobre los beneficios y exenciones fiscales por la vinculación de personas con discapacidad.
-Capacita a tu personal para promover un ambiente inclusivo.`
-          }
-        },
-        {
-          text: "¿Tu empresa tiene trabajadores sindicalizados o existe un sindicato en la empresa?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Respeta el derecho de asociación sindical y de negociación colectiva.
-Garantiza la protección del fuero sindical de los trabajadores.
-Mantén un diálogo abierto y constructivo con las organizaciones sindicales.`,
-            "No": `
-Respeta el derecho de asociación sindical de tus trabajadores, incluso si no tienen sindicato.
-Evita cualquier práctica antisindical.
-Promueve un ambiente de respeto y diálogo con tus trabajadores.`
-          }
-        },
-        {
-          text: "¿Tu empresa tiene una política de equidad de género o busca promover la igualdad en el trabajo?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Actualiza tu política de equidad de género para incluir los nuevos principios de igualdad salarial y no discriminación.
-Revisa y ajusta los procesos de selección, promoción y remuneración para asegurar la igualdad de oportunidades.
-Implementa acciones afirmativas para corregir desigualdades históricas.
-Capacita a tus líderes y empleados sobre la importancia de la equidad de género.`,
-            "No": `
-Considera implementar una política de equidad de género en tu empresa.
-La nueva ley promueve la igualdad salarial y la no discriminación.
-La equidad de género mejora el ambiente laboral y la productividad.`
-          }
-        }
-      ]
-    },
-    // SECCIÓN 6: TERCERIZACIÓN LABORAL
-    {
-      title: "Tercerización Laboral",
-      questions: [
-        {
-          text: "¿Tu empresa contrata servicios con empresas de tercerización o intermediación laboral?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Revisa cuidadosamente tus contratos con empresas de tercerización para asegurar que cumplen con la nueva normativa.
-Asegúrate de que no se esté incurriendo en intermediación laboral ilegal, especialmente si el personal tercerizado realiza funciones misionales permanentes.
-Verifica que las empresas contratistas cumplan con todas sus obligaciones laborales y de seguridad social.
-Fortalece tus procesos de auditoría y seguimiento a los proveedores de servicios tercerizados.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        },
-        {
-          text: "¿Utilizas contratos de prestación de servicios para labores que son misionales y permanentes de tu negocio?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `Reevalúa el uso de contratos de prestación de servicios para actividades misionales y permanentes.
-La nueva ley restringe el uso de este tipo de contratos para evitar la simulación de relaciones laborales.
-Considera migrar a contratos laborales directos a término indefinido para este tipo de funciones.
-Asesórate legalmente para evitar posibles demandas por existencia de relación laboral.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        }
-      ]
-    },
-    // SECCIÓN 7: Nuevas Formas de Prestación del Servicio
-    {
-      title: "Nuevas Formas de Prestación del Servicio",
-      questions: [
-        {
-          text: "¿Tienes trabajadores en modalidad de teletrabajo o estás considerando implementarlo?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Formaliza el teletrabajo mediante contrato escrito: Incluye condiciones específicas como la modalidad, lugar de ejecución, disponibilidad, medios tecnológicos, y controles sobre el cumplimiento.
--Incluye cláusula de reversibilidad: El contrato debe establecer que el teletrabajo no es obligatorio para el trabajador, y que puede regresar a la modalidad presencial bajo ciertas condiciones acordadas.
--Diseña o actualiza la política de teletrabajo: Debe contemplar la seguridad digital, manejo de la información, disponibilidad del trabajador, desconexión laboral, y cumplimiento del SG-SST.
--Paga el auxilio de conectividad digital:
-Es obligatorio si el salario del teletrabajador es igual o inferior a 2 SMMLV. Este auxilio reemplaza el auxilio de transporte en la modalidad remota o de teletrabajo.
--Evalúa el teletrabajo transnacional: Puedes implementarlo si las funciones se pueden desempeñar desde el exterior.
--Asegura la protección de la salud en el entorno remoto: Incluye al teletrabajador en la evaluación de riesgos del SG-SST y entrega recomendaciones sobre ergonomía, pausas activas y riesgos psicosociales.
--Implementa canales de reporte y control claros: Utiliza medios tecnológicos para documentar la jornada laboral, cumplimiento de funciones, y entrega de resultados.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        },
-        {
-          text: "¿Estás utilizando o planeas utilizar plataformas digitales para la contratación de servicios (ej. apps de delivery, transporte)?",
-          type: "yes_no",
-          recommendations: {
-            "Sí": `
-Revisa la nueva regulación sobre trabajadores de plataformas digitales, que establece una presunción de laboralidad.
-Asegúrate de que la relación contractual con los trabajadores de plataformas cumpla con las nuevas exigencias laborales y de seguridad social.
-Considera la posibilidad de establecer contratos laborales directos si las características de la relación indican subordinación.
-Prepárate para posibles litigios o demandas si no se ajustan a la nueva normativa.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
-          }
-        }
-      ]
-    }
-  ];
-
-  userForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    initialScreen.classList.add('hidden');
-    sectionsScreen.classList.remove('hidden');
-  });
-
-  function startSection(sectionIndex) {
-    currentSectionIndex = sectionIndex;
-    currentQuestionIndex = 0;
-    history = []; // Limpiar historial al iniciar una nueva sección
-    sectionsScreen.classList.add('hidden');
-    questionsScreen.classList.remove('hidden');
-    renderQuestion();
-  }
-
-  function renderQuestion() {
-    recommendationDiv.classList.add('hidden'); // Ocultar recomendación al cambiar de pregunta
-    recommendationTextElement.innerHTML = ''; // Limpiar el texto de la recomendación
-    optionsContainer.innerHTML = ''; // Limpiar opciones anteriores
-    selectedAnswer = null; // Resetear la respuesta seleccionada
-
-    const section = sectionsData[currentSectionIndex];
-    const question = section.questions[currentQuestionIndex];
-
-    questionTextElement.textContent = question.text;
-
-    if (question.type === "yes_no" || question.type === "yes_no_conditional") {
-      // Para preguntas de Sí/No
-      const yesBtn = document.createElement('button');
-      yesBtn.classList.add('option-btn');
-      yesBtn.textContent = 'Sí';
-      yesBtn.onclick = () => selectAnswer('Sí');
-      optionsContainer.appendChild(yesBtn);
-
-      const noBtn = document.createElement('button');
-      noBtn.classList.add('option-btn');
-      noBtn.textContent = 'No';
-      noBtn.onclick = () => selectAnswer('No');
-      optionsContainer.appendChild(noBtn);
-    } else if (question.type === "multiple_choice") {
-      // Para preguntas de opción múltiple (como la primera de Sección 3)
-      question.options.forEach(option => {
-        const optionBtn = document.createElement('button');
-        optionBtn.classList.add('option-btn');
-        optionBtn.textContent = option.text;
-        optionBtn.onclick = () => selectAnswer(option.value);
-        optionsContainer.appendChild(optionBtn);
-      });
-    } else if (question.type === "conditional_income") {
-      // Lógica específica para la pregunta de ingresos en Sección 3
-      let incomeOptions = [];
-      if (history[history.length - 1].answer === "industrial") {
-        incomeOptions = [
-          { text: "Menor o igual a $1.173 millones (Microempresa)", value: "Microempresa" },
-          { text: "Mayor a $1.173 millones y hasta $10.212 millones (Pequeña empresa)", value: "Pequeña empresa" },
-          { text: "Mayor a $10.212 millones y hasta $86.517 millones (Mediana empresa)", value: "Mediana empresa" },
-          { text: "Mayor a $86.517 millones (Gran empresa)", value: "Gran empresa" }
-        ];
-      } else if (history[history.length - 1].answer === "servicios") {
-        incomeOptions = [
-          { text: "Menor o igual a $1.642 millones (Microempresa)", value: "Microempresa" },
-          { text: "Entre $1.642 y $6.575 millones (Pequeña empresa)", value: "Pequeña empresa" },
-          { text: "Entre $6.575 y $24.060 millones (Mediana empresa)", value: "Mediana empresa" },
-          { text: "Mayor a $24.060 millones (Gran empresa)", value: "Gran empresa" }
-        ];
-      } else if (history[history.length - 1].answer === "comercio") {
-        incomeOptions = [
-          { text: "Menor o igual a $2.229 millones (Microempresa)", value: "Microempresa" },
-          { text: "Entre $2.229 y $21.480 millones (Pequeña empresa)", value: "Pequeña empresa" },
-          { text: "Entre $21.480 y $107.566 millones (Mediana empresa)", value: "Mediana empresa" },
-          { text: "Mayor a $107.566 millones (Gran empresa)", value: "Gran empresa" }
-        ];
+        ]
       }
+    ];
 
-      incomeOptions.forEach(option => {
-        const optionBtn = document.createElement('button');
-        optionBtn.classList.add('option-btn');
-        optionBtn.textContent = option.text;
-        optionBtn.onclick = () => selectAnswer(option.value);
-        optionsContainer.appendChild(optionBtn);
+    // Función para mostrar la pantalla inicial
+    function showInitialScreen() {
+      initialScreen.classList.remove('hidden');
+      sectionsOverviewScreen.classList.add('hidden');
+      questionsScreen.classList.add('hidden');
+      completionScreen.classList.add('hidden');
+      // Reiniciar el estado de la aplicación
+      currentSectionIndex = 0;
+      currentQuestionIndex = 0;
+      history = [];
+      selectedAnswer = null;
+      companyClassification = null;
+    }
+
+    // Manejador del formulario inicial
+    userForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      // Aquí podrías guardar los datos del usuario si fuera necesario
+      // Por ahora, simplemente avanzamos a la pantalla de resumen de secciones
+      initialScreen.classList.add('hidden');
+      sectionsOverviewScreen.classList.remove('hidden');
+      populateSectionsList();
+    });
+
+    // Función para poblar la lista de secciones en la pantalla de resumen
+    function populateSectionsList() {
+      sectionsList.innerHTML = ''; // Limpiar lista anterior
+      sectionsData.forEach((section, index) => {
+        const p = document.createElement('p');
+        // Formato para el título de la sección: SECCIÓN X: TÍTULO EN MAYÚSCULAS
+        p.textContent = `SECCIÓN ${index + 1}: ${section.title.toUpperCase()}`;
+        sectionsList.appendChild(p);
       });
     }
 
-    updateProgressBar();
-    updateNavigationButtons();
-  }
+    // Manejador del botón "Iniciar mi autodiagnóstico"
+    startAutodiagnosisBtn.addEventListener('click', function () {
+      sectionsOverviewScreen.classList.add('hidden');
+      questionsScreen.classList.remove('hidden');
+      loadQuestion();
+    });
 
-  function selectAnswer(answer) {
-    selectedAnswer = answer;
-    // Resaltar la opción seleccionada
-    document.querySelectorAll('.option-btn').forEach(btn => {
-      btn.classList.remove('selected');
-      if (btn.textContent.includes(answer) || btn.value === answer) { // Improved selection
-        btn.classList.add('selected');
+    // Manejador del botón "Volver" desde la pantalla de resumen de secciones
+    backToInitialBtn.addEventListener('click', function () {
+      showInitialScreen();
+    });
+
+    // Función para cargar la pregunta actual
+    function loadQuestion() {
+      const section = sectionsData[currentSectionIndex];
+      const question = section.questions[currentQuestionIndex];
+
+      // Actualizar el título de la sección actual en formato solicitado
+      currentSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${section.title.toUpperCase()}`;
+
+      // Lógica para determinar si la pregunta "¿Tienes menos de 10 trabajadores?" debe mostrarse
+      if (currentSectionIndex === 2 && currentQuestionIndex === 2 && question.type === "yes_no_conditional") {
+        const sectorAnswer = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
+        const incomeAnswer = history.find(item => item.questionText === sectionsData[2].questions[1].text)?.answer;
+
+        let tempCompanyClassification = "";
+        if (incomeAnswer) {
+          const incomeOption = incomeThresholds[sectorAnswer].find(opt => opt.value === incomeAnswer);
+          if (incomeOption) {
+            tempCompanyClassification = incomeOption.classification;
+          }
+        }
+
+        // Esta pregunta SOLO se salta si la empresa es Mediana o Gran.
+        // Se muestra para Microempresa y Pequeña, independientemente del sector.
+        if (!(tempCompanyClassification === "Microempresa" || tempCompanyClassification === "Pequeña")) {
+          currentQuestionIndex++; // Salta esta pregunta
+          loadQuestion(); // Carga la siguiente pregunta
+          return; // Sale de la función para evitar que se cargue la pregunta actual
+        }
       }
-    });
 
-    showRecommendation();
-  }
+      questionTextElement.textContent = question.text;
+      optionsContainer.innerHTML = ''; // Limpiar opciones anteriores
+      recommendationDiv.classList.add('hidden'); // Ocultar recomendación
 
-  function showRecommendation() {
-    const section = sectionsData[currentSectionIndex];
-    const question = section.questions[currentQuestionIndex];
-    let recommendation = '';
+      if (question.type === "yes_no" || question.type === "yes_no_conditional") {
+        createOptionButton("Sí", "Sí");
+        createOptionButton("No", "No");
+      } else if (question.type === "multiple_choice") {
+        question.options.forEach(option => {
+          createOptionButton(option.text, option.value);
+        });
+      } else if (question.type === "conditional_income") {
+        const sectorQuestion = sectionsData[2].questions[0];
+        const sectorAnswer = history.find(item => item.questionText === sectorQuestion.text)?.answer;
 
-    if (question.type === "yes_no" || question.type === "yes_no_conditional") {
-      recommendation = question.recommendations[selectedAnswer];
-    } else if (question.type === "multiple_choice") {
-      // For multiple choice, recommendation is handled dynamically or in the next step
-      // For now, no direct recommendation on selection for this type
-      recommendation = 'Selecciona una opción para continuar.';
-    } else if (question.type === "conditional_income") {
-      // When an income option is selected, store the classification
-      companyClassification = selectedAnswer;
-      // Do not show recommendation directly for income selection, it leads to the next question
-      recommendationDiv.classList.add('hidden');
-      return; // Exit to allow nextQuestion to proceed
-    }
-
-    recommendationTextElement.innerHTML = recommendation;
-    recommendationDiv.classList.remove('hidden');
-  }
-
-  function nextQuestion() {
-    if (selectedAnswer === null && (sectionsData[currentSectionIndex].questions[currentQuestionIndex].type === "yes_no" || sectionsData[currentSectionIndex].questions[currentQuestionIndex].type === "yes_no_conditional" || sectionsData[currentSectionIndex].questions[currentQuestionIndex].type === "multiple_choice")) {
-      alert('Por favor selecciona una respuesta antes de continuar.');
-      return;
-    }
-
-    history.push({
-      section: currentSectionIndex,
-      question: currentQuestionIndex,
-      answer: selectedAnswer,
-      recommendation: recommendationTextElement.innerHTML // Guardar la recomendación mostrada
-    });
-
-    const section = sectionsData[currentSectionIndex];
-
-    // Lógica para Sección 3
-    if (currentSectionIndex === 2) { // Sección 3: Procesos Disciplinarios y RIT
-      if (currentQuestionIndex === 0) { // Pregunta de sector
-        currentQuestionIndex++; // Ir a la pregunta de ingresos
-      } else if (currentQuestionIndex === 1) { // Pregunta de ingresos
-        // Determine if the next question (about 10 workers) should be shown
-        if (companyClassification === "Microempresa" || companyClassification === "Pequeña empresa") {
-          currentQuestionIndex = 2; // Move to the "less than 10 workers" question
+        if (sectorAnswer && incomeThresholds[sectorAnswer]) {
+          incomeThresholds[sectorAnswer].forEach(option => {
+            createOptionButton(option.text, option.value);
+          });
         } else {
-          // If Mediana or Gran empresa, skip the "less than 10 workers" question
-          // and directly show the recommendation for Mediana/Gran based on companyClassification
-          recommendationTextElement.innerHTML = section.questions[1].recommendations[companyClassification];
-          recommendationDiv.classList.remove('hidden');
-          currentQuestionIndex = 3; // Skip to the next relevant question for Mediana/Gran
+          optionsContainer.innerHTML = '<p>Por favor, selecciona primero el sector de tu empresa para ver las opciones de ingresos.</p>';
+          nextBtn.disabled = true; // Deshabilitar botón Siguiente si el sector no está seleccionado
         }
-      } else if (currentQuestionIndex === 2 && (history[history.length - 2].answer === "Microempresa" || history[history.length - 2].answer === "Pequeña empresa")) {
-        // This is the "less than 10 workers" question
-        // The recommendation is already shown, proceed to the next regular question
-        currentQuestionIndex++;
+      }
+
+      // Restaurar selección si existe en el historial
+      const lastAnswerInHistory = history.find(item => item.questionText === question.text);
+      if (lastAnswerInHistory) {
+        selectedAnswer = lastAnswerInHistory.answer;
+        // Para todos los tipos de preguntas, si hay una respuesta en el historial, márcala
+        const selectedBtn = optionsContainer.querySelector(`.option-btn[data-value="${selectedAnswer}"]`);
+        if (selectedBtn) {
+          selectedBtn.classList.add('selected');
+        }
+        showRecommendation(question, selectedAnswer);
       } else {
-        currentQuestionIndex++;
+        selectedAnswer = null; // Reiniciar respuesta seleccionada para nuevas preguntas
       }
-    } else {
-      currentQuestionIndex++;
+
+      updateNavigationButtons();
+      updateProgressBar();
     }
 
-    if (currentQuestionIndex < section.questions.length) {
-      // Skip the conditional "less than 10 workers" question if not applicable for Section 3
-      if (currentSectionIndex === 2 && currentQuestionIndex === 2 && (companyClassification !== "Microempresa" && companyClassification !== "Pequeña empresa")) {
-        currentQuestionIndex++; // Skip this question
-      }
-      renderQuestion();
-    } else {
-      alert('¡Has completado esta sección!');
-      goToSections();
+    // Función auxiliar para crear botones de opción
+    function createOptionButton(text, value) {
+      const button = document.createElement('button');
+      button.className = 'option-btn';
+      button.textContent = text;
+      button.dataset.value = value;
+      button.onclick = () => selectOption(value, button);
+      optionsContainer.appendChild(button);
     }
-  }
 
-  function previousQuestion() {
-    if (history.length > 0) {
-      const prev = history.pop();
-      currentSectionIndex = prev.section;
-      currentQuestionIndex = prev.question;
-      selectedAnswer = prev.answer; // Restaurar la respuesta anterior
-      renderQuestion(); // Renderizar la pregunta anterior
-      // If there was a recommendation previously, show it again
-      if (prev.recommendation) {
-        recommendationTextElement.innerHTML = prev.recommendation;
+    // Función para seleccionar una opción
+    function selectOption(value, button) {
+      // Desmarcar todas las opciones
+      document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+      // Marcar la opción seleccionada
+      button.classList.add('selected');
+      selectedAnswer = value;
+      showRecommendation(sectionsData[currentSectionIndex].questions[currentQuestionIndex], selectedAnswer);
+    }
+
+    // **NUEVA FUNCIÓN AUXILIAR: Formatea el texto de la recomendación con párrafos y viñetas**
+    function formatRecommendationText(text) {
+      let formattedHtml = '';
+      const lines = text.split('\n').map(line => line.trim()); // Dividir por saltos de línea y limpiar espacios
+      let inList = false;
+
+      lines.forEach(line => {
+        // Si la línea comienza con un bullet (• o -)
+        if (line.startsWith('•') || line.startsWith('-')) {
+          if (!inList) {
+            formattedHtml += '<ul>'; // Iniciar nueva lista si no estamos ya en una
+            inList = true;
+          }
+          formattedHtml += `<li>${line.substring(1).trim()}</li>`; // Quitar el bullet y añadir como item de lista
+        } else {
+          if (inList) {
+            formattedHtml += '</ul>'; // Cerrar lista si estábamos en una
+            inList = false;
+          }
+          if (line !== '') { // Si la línea no está vacía, es un párrafo
+            formattedHtml += `<p>${line}</p>`;
+          }
+        }
+      });
+
+      if (inList) { // Asegurarse de cerrar cualquier lista abierta al final
+        formattedHtml += '</ul>';
+      }
+      return formattedHtml;
+    }
+
+    // Función para mostrar la recomendación
+    function showRecommendation(question, answer) {
+      let recommendation = '';
+
+      if (question.type === "conditional_income") {
+        const sectorAnswer = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
+        let currentCompanyClassification = "";
+
+        const selectedIncomeOption = incomeThresholds[sectorAnswer]?.find(opt => opt.value === answer);
+        if (selectedIncomeOption) {
+          currentCompanyClassification = selectedIncomeOption.classification;
+        }
+        companyClassification = currentCompanyClassification; // Actualizar la clasificación global
+
+        // Lógica de recomendación basada en la clasificación
+        if (companyClassification === "Mediana" || companyClassification === "Gran") {
+          recommendation = question.recommendations["Mediana"]; // Esta clave tiene el texto para RIT obligatorio (aplica a Mediana y Gran)
+        } else { // Microempresa o Pequeña (independientemente del sector)
+          recommendation = question.recommendations["continue_to_next"]; // Texto para continuar a la siguiente pregunta
+        }
+      } else if (question.type === "yes_no_conditional") {
+        // Esta pregunta es "¿Tienes menos de 10 trabajadores?"
+        // companyClassification ya debería estar actualizado por la pregunta anterior de ingresos
+        if (companyClassification === "Microempresa" || companyClassification === "Pequeña") {
+          if (answer === "Sí") {
+            recommendation = question.recommendations["Sí"]; // Recomendación para menos de 10 empleados
+          } else {
+            recommendation = question.recommendations["No"]; // Recomendación para 10 o más empleados (RIT obligatorio)
+          }
+        } else {
+          // Esto no debería ser alcanzado si la lógica de salto en loadQuestion funciona correctamente
+          recommendation = "Esta pregunta no aplica para tu tipo de empresa."; // Fallback
+        }
+      } else {
+        recommendation = question.recommendations[answer];
+      }
+
+      if (recommendation) {
         recommendationDiv.classList.remove('hidden');
-      }
-    } else {
-      // Si no hay historial, volver a la pantalla de secciones
-      goToSections();
-    }
-  }
-
-  function goToSections() {
-    questionsScreen.classList.add('hidden');
-    sectionsScreen.classList.remove('hidden');
-    companyClassification = null; // Reset for Section 3
-  }
-
-  function updateProgressBar() {
-    const section = sectionsData[currentSectionIndex];
-    let totalQuestionsInCurrentFlow = section.questions.length;
-
-    // Adjust total questions for Section 3 conditional flow
-    if (currentSectionIndex === 2) {
-      // If it's the income question and it leads to Mediana/Gran, then the "less than 10" question is skipped
-      if (currentQuestionIndex === 1 && (companyClassification !== "Microempresa" && companyClassification !== "Pequeña empresa")) {
-        totalQuestionsInCurrentFlow = section.questions.length - 1; // Subtract the skipped question
+        // Usar la nueva función para formatear el texto de la recomendación
+        recommendationTextElement.innerHTML = formatRecommendationText(recommendation);
+      } else {
+        recommendationDiv.classList.add('hidden');
       }
     }
 
-    const progress = (currentQuestionIndex / totalQuestionsInCurrentFlow) * 100;
-    progressBarFill.style.width = `${progress}%`;
-  }
+    // Función para avanzar a la siguiente pregunta o sección
+    function nextQuestion() {
+      const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
 
-  function updateNavigationButtons() {
-    backBtn.style.display = (history.length > 0) ? 'inline-block' : 'none';
-  }
-</script>
+      if (selectedAnswer === null) {
+        recommendationDiv.classList.remove('hidden');
+        recommendationTextElement.innerHTML = formatRecommendationText("Por favor, selecciona una opción para continuar."); // Usar formatRecommendationText aquí también
+        return;
+      } else {
+        history.push({ questionText: currentQuestion.text, answer: selectedAnswer });
+      }
+
+      // Lógica para saltar preguntas condicionales en la Sección 3
+      if (currentSectionIndex === 2) { // Sección 3: Procesos Disciplinarios y RIT
+        if (currentQuestionIndex === 0) { // Pregunta de Sector
+          currentQuestionIndex++; // Avanzar a la pregunta de ingresos
+        } else if (currentQuestionIndex === 1) { // Pregunta de Ingresos
+          const sector = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
+          const incomeAnswer = history.find(item => item.questionText === sectionsData[2].questions[1].text)?.answer;
+
+          let tempCompanyClassification = "";
+          if (incomeAnswer) {
+            const incomeOption = incomeThresholds[sector]?.find(opt => opt.value === incomeAnswer);
+            if (incomeOption) {
+              tempCompanyClassification = incomeOption.classification;
+            }
+          }
+          companyClassification = tempCompanyClassification; // Actualizar clasificación global
+
+          // Si es Mediana o Gran, salta la pregunta "¿Tienes menos de 10 trabajadores?" (índice 2)
+          if (companyClassification === "Mediana" || companyClassification === "Gran") {
+            currentQuestionIndex += 2; // Salta la pregunta condicional y va directamente a la siguiente
+          } else { // Si es Microempresa o Pequeña (independientemente del sector), avanza a la pregunta "¿Tienes menos de 10 trabajadores?"
+            currentQuestionIndex++;
+          }
+        } else {
+          currentQuestionIndex++; // Para las demás preguntas de la sección 3
+        }
+      } else {
+        currentQuestionIndex++; // Para secciones que no son la 3
+      }
+
+
+      if (currentQuestionIndex < sectionsData[currentSectionIndex].questions.length) {
+        loadQuestion();
+      } else {
+        // Se terminó la sección actual, intentar pasar a la siguiente
+        currentSectionIndex++;
+        currentQuestionIndex = 0; // Reiniciar el índice de preguntas para la nueva sección
+        history = []; // Reiniciar historial para la nueva sección (o mantenerlo si se quiere un resumen final completo)
+
+        if (currentSectionIndex < sectionsData.length) {
+          loadQuestion(); // Cargar la primera pregunta de la nueva sección
+        } else {
+          // Todas las secciones completadas
+          questionsScreen.classList.add('hidden');
+          completionScreen.classList.remove('hidden');
+          // Aquí podrías enviar los datos recopilados o mostrar un resumen
+          console.log("Autodiagnóstico completado. Historial:", history);
+        }
+      }
+    }
+
+    // Función para volver a la pregunta o sección anterior
+    function previousQuestion() {
+      if (currentQuestionIndex > 0) {
+        // Eliminar la última respuesta del historial al retroceder
+        history.pop();
+
+        // Lógica inversa para preguntas condicionales en la Sección 3
+        if (currentSectionIndex === 2) {
+          // Si estamos en la pregunta del RIT (índice 3)
+          // y la pregunta anterior (índice 2, "Tienes menos de 10 trabajadores?") fue saltada
+          if (currentQuestionIndex === 3 && sectionsData[currentSectionIndex].questions[currentQuestionIndex - 1]?.type === "yes_no_conditional") {
+            // Se necesita recalcular la clasificación de la empresa a partir del historial
+            const sector = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
+            const incomeAnswer = history.find(item => item.questionText === sectionsData[2].questions[1].text)?.answer;
+
+            let tempCompanyClassification = "";
+            if (incomeAnswer) {
+              const incomeOption = incomeThresholds[sector]?.find(opt => opt.value === incomeAnswer);
+              if (incomeOption) {
+                tempCompanyClassification = incomeOption.classification;
+              }
+            }
+
+            // Si la pregunta de "menos de 10 trabajadores" fue saltada (es decir, era Mediana o Gran), retrocede dos pasos
+            if (tempCompanyClassification === "Mediana" || tempCompanyClassification === "Gran") {
+              currentQuestionIndex -= 2;
+            } else { // Si la pregunta de "menos de 10 trabajadores" SÍ se mostró (Micro/Pequeña), retrocede un paso
+              currentQuestionIndex--;
+            }
+          } else {
+            currentQuestionIndex--;
+          }
+        } else {
+          currentQuestionIndex--;
+        }
+        loadQuestion();
+      } else {
+        // Si estamos en la primera pregunta de una sección, volvemos a la sección anterior
+        if (currentSectionIndex > 0) {
+          currentSectionIndex--;
+          // Establecer el índice de la pregunta al final de la sección anterior
+          currentQuestionIndex = sectionsData[currentSectionIndex].questions.length - 1;
+          loadQuestion();
+        } else {
+          // Si estamos en la primera pregunta de la primera sección, volvemos a la pantalla de resumen de secciones
+          questionsScreen.classList.add('hidden');
+          sectionsOverviewScreen.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Función para actualizar la barra de progreso
+    function updateProgressBar() {
+      const totalQuestionsInCurrentSection = sectionsData[currentSectionIndex].questions.length;
+      let effectiveTotalQuestions = totalQuestionsInCurrentSection;
+
+      // Ajustar el total de preguntas para la barra de progreso si se salta una pregunta condicional en la Sección 3
+      if (currentSectionIndex === 2) {
+        const sectorQuestion = sectionsData[2].questions[0];
+        const incomeQuestion = sectionsData[2].questions[1];
+        const sectorAnswer = history.find(item => item.questionText === sectorQuestion.text)?.answer;
+        const incomeAnswer = history.find(item => item.questionText === incomeQuestion.text)?.answer;
+
+        if (sectorAnswer && incomeAnswer) {
+          let tempCompanyClassification = "";
+          const incomeOption = incomeThresholds[sectorAnswer]?.find(opt => opt.value === incomeAnswer);
+          if (incomeOption) {
+            tempCompanyClassification = incomeOption.classification;
+          }
+
+          // Si la empresa es Mediana o Gran, se salta la pregunta condicional
+          if (tempCompanyClassification === "Mediana" || tempCompanyClassification === "Gran") {
+            effectiveTotalQuestions = totalQuestionsInCurrentSection - 1;
+          }
+        }
+      }
+
+      const progress = ((currentQuestionIndex + 1) / effectiveTotalQuestions) * 100;
+      progressBarFill.style.width = `${progress}%`;
+    }
+
+
+    // Inicializar la pantalla al cargar
+    showInitialScreen();
+  </script>
 </body>
+
 </html>
