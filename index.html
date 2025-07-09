@@ -41,6 +41,22 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
+    .header .main-logo {
+      max-width: 300px;
+      /* Tamaño para el logo principal de Nicolás Pareja */
+      height: auto;
+      margin-bottom: 10px;
+      /* Espacio debajo del logo principal */
+    }
+
+    .header .secondary-logo {
+      max-width: 200px;
+      /* Tamaño para el logo secundario de Laboralízate */
+      height: auto;
+      margin-bottom: 15px;
+      /* Espacio debajo del logo secundario */
+    }
+
     .header h1 {
       color: #1a237e;
       font-size: 2.5em;
@@ -264,6 +280,14 @@
       line-height: 1.6;
     }
 
+    #completion-screen .seal-logo {
+      max-width: 150px;
+      /* Tamaño para el logo de sello */
+      height: auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
     /* Estilos para el consentimiento de datos */
     .data-consent {
       margin-top: 30px;
@@ -358,8 +382,12 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>Reforma Laboral 2025</h1>
-      <p>Ley 2466 de 2025 - Consultoría Jurídica Especializada</p>
+      <img src="Logo horizontal.png" alt="Logo Nicolás Pareja & Asociados"
+        class="main-logo">
+      <img src="01_MORADO_1TINTA.png" alt="Logo Laboralízate"
+        class="secondary-logo">
+      <h1 style="color: #1a237e; font-size: 1.8em; margin-bottom: 5px;">Reforma Laboral 2025</h1>
+      <p style="color: #5e35b1; font-size: 1em;">Ley 2466 de 2025 - Consultoría Jurídica Especializada</p>
     </div>
 
     <div id="initial-screen" class="card">
@@ -483,7 +511,8 @@
 
     <div id="completion-screen" class="card hidden">
       <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;">¡Autodiagnóstico Completado!</h2>
-      <!-- Se ha eliminado el texto pequeño aquí -->
+      <img src="SELLO_MORADO.png" alt="Sello Laboralízate"
+        class="seal-logo">
       <div style="text-align: center;">
         <button class="btn" onclick="showInitialScreen()">Volver al Inicio</button>
       </div>
@@ -571,7 +600,7 @@ Recomendaciones clave:
 2. Define tipo de contrato, duración y jornada.
 3. Pacta por escrito el día de descanso obligatorio.
 4. Establece las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
-5. Incluye cláusulas que delimiten los requisitos formal es de solicitud y justificación de los nuevos permisos laborales, tales como: asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido.
+5. Incluye cláusulas que delimiten los requisitos formales de solicitud y justificación de los nuevos permisos laborales, tales como: asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido.
 6. Considera la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la ley.
 7. Entrega copia firmada y guarda soporte.`
             }
@@ -767,7 +796,7 @@ El recargo nocturno se mantiene en el 35% por hora labor, pero  desde el  25 de 
 El tratamiento de estos días se ha unificado bajo el concepto de “día de descanso obligatorio”, y el recargo por trabajar en ellos se ajusta al 100% de manera progresiva:
 A partir del 1° de julio de 2025, subirá al 80%;
 desde el 1° de julio de 2026, será del 90%, 
-a partir del 1° de julio de 2027 será del 100%, 
+a partir del 1° de julio de 2027 será del 100%. 
 Aunque los empleadores pueden acogerse a este último desde ya si así lo deciden.
 1. Evalúa el impacto financiero de este incremento en tu nomina
 2. Evalúa la pertinencia de pactar (por escrito) que el día de descanso obligatorio sea distinto al domingo. 
