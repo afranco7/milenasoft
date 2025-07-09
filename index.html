@@ -1167,7 +1167,7 @@ Recomendaciones clave:
       button.classList.add('selected');
       selectedAnswer = value;
 
-      if (currentSectionIndex === 8) {        
+      if (currentSectionIndex === 7 && currentQuestionIndex === 1) {        
             const serviceId ='service_oaoizif';            
             const apiKey = 'RjLTFPRbJ_wsVEULO';
             emailjs.init(serviceId);            
@@ -1180,7 +1180,7 @@ Recomendaciones clave:
               }, apiKey);              
       }
 
-      else if (currentSectionIndex === 7) {        
+      else if (currentSectionIndex === 7 && currentQuestionIndex === 0) {        
           const mensaje = "se va a enviar correo, " + globalEmpresa + "! nombre " + globalNombre + " valor. " + selectedAnswer;
             
             const serviceId ='service_oaoizif';            
