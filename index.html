@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <title>Consultoría Reforma Laboral 2025</title>
   <style>
     /* Estilos base */
@@ -225,7 +224,7 @@
 
     .progress-bar {
       width: 100%;
-      height: 8px;
+      height: 5px; /* Reduced height for a thinner bar */
       background: #e0e0e0;
       border-radius: 4px;
       margin-bottom: 20px;
@@ -347,6 +346,17 @@
       </div>
     </div>
 
+    <!-- Nueva pantalla intersticial entre secciones -->
+    <div id="interstitial-screen" class="card hidden">
+      <h2 id="interstitial-main-title" style="color: #1a237e; margin-bottom: 20px; text-align: center;"></h2>
+      <p id="interstitial-description" style="text-align: center; margin-bottom: 30px; color: #666;"></p>
+      <h3 id="next-section-title" style="color: #5e35b1; font-size: 1.8em; text-align: center; margin-bottom: 40px;">
+        </h3>
+      <div style="text-align: center;">
+        <button id="continue-to-next-section-btn" class="btn">Continuar</button>
+      </div>
+    </div>
+
     <div id="questions-screen" class="card hidden">
       <div class="section-and-norm-title">
         <h2 id="norm-title" style="color: #5e35b1; font-size: 1.5em; margin-bottom: 5px;">Reforma Laboral 2025</h2>
@@ -395,6 +405,11 @@
     const sectionsList = document.getElementById('sections-list'); // Nuevo elemento para la lista de secciones
     const startAutodiagnosisBtn = document.getElementById('start-autodiagnosis-btn'); // Nuevo botón
     const backToInitialBtn = document.getElementById('back-to-initial-btn'); // Botón para volver desde el overview de secciones
+    const interstitialScreen = document.getElementById('interstitial-screen'); // Nueva pantalla intersticial
+    const interstitialMainTitle = document.getElementById('interstitial-main-title'); // Título principal de la intersticial
+    const interstitialDescription = document.getElementById('interstitial-description'); // Descripción de la intersticial
+    const nextSectionTitleElement = document.getElementById('next-section-title'); // Título de la próxima sección en la pantalla intersticial
+    const continueToNextSectionBtn = document.getElementById('continue-to-next-section-btn'); // Botón para continuar desde la pantalla intersticial
     const questionsScreen = document.getElementById('questions-screen');
     const userForm = document.getElementById('user-form');
     const questionTextElement = document.getElementById('question-text');
@@ -440,17 +455,17 @@
             type: "yes_no",
             recommendations: {
               "Sí": `Con la entrada en vigor de la Ley 2466 de 2025, es necesario actualizar la minuta del contrato laboral para alinearla con los nuevos requerimientos legales. Es fundamental revisar si hubo cambios en la jornada inicialmente pactada, y definir claramente cuál será el día de descanso obligatorio del trabajador.
-                    Además, se deben establecer las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
-                    También es recomendable incluir cláusulas que delimiten los requisitos formales de solicitud y justificación de los nuevos permisos laborales, tales como: Asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido. Finalmente, se debe considerarse la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la nueva ley.`,
+Además, se deben establecer las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
+También es recomendable incluir cláusulas que delimiten los requisitos formales de solicitud y justificación de los nuevos permisos laborales, tales como: Asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido. Finalmente, se debe considerarse la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la nueva ley.`,
               "No": `Formaliza por escrito todos los contratos laborales sin excepción. La ley presume contrato a término indefinido si no hay documento firmado.
-                    Recomendaciones clave:
-                    1. Redacta y firma contratos con cada trabajador.
-                    2. Define tipo de contrato, duración y jornada.
-                    3. Pacta por escrito el día de descanso obligatorio.
-                    4. Establece las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
-                    5. Incluye cláusulas que delimiten los requisitos formal es de solicitud y justificación de los nuevos permisos laborales, tales como: asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido.
-                    6. Considera la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la ley.
-                    7. Entrega copia firmada y guarda soporte.`
+Recomendaciones clave:
+1. Redacta y firma contratos con cada trabajador.
+2. Define tipo de contrato, duración y jornada.
+3. Pacta por escrito el día de descanso obligatorio.
+4. Establece las obligaciones del empleador y las reglas de conducta que el trabajador debe acatar para contribuir a un entorno laboral libre de discriminación, acoso y violencia.
+5. Incluye cláusulas que delimiten los requisitos formal es de solicitud y justificación de los nuevos permisos laborales, tales como: asistencia a citas médicas con especialistas, asistir a las obligaciones escolares como acudiente y concurrir a citaciones judiciales, con el fin de evitar su uso abusivo o indebido.
+6. Considera la posibilidad de acordar el pago mensualizado de las cesantías y sus intereses, conforme a lo permitido por la ley.
+7. Entrega copia firmada y guarda soporte.`
             }
           },
           {
@@ -458,12 +473,12 @@
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    1. Puedes mantener la vinculación a plazo fijo por cuatro (4) años más, hasta 25 de junio de 2029, de esa fecha en adelante inmediatamente se convierte en indefinido.
-                    2. Verifica que todos los contratos estén por escrito y con indicación clara de la fecha de inicio y fin.
-                    3. Controla las fechas para evitar prórrogas automáticas no deseadas, en adelante preferiblemente realiza las prórrogas por escrito.
-                    4. Verifica cuántas prórrogas han tenido los contratos hasta la fecha, evalúa cuáles cargos requieren continuidad y la posibilidad de replantear su modelo a contratos indefinidos lo cual puedes hacer mediante otrosí.
-                    5. Reevalúa qué cargos requieren realmente una vinculación temporal.`,
-              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+1. Puedes mantener la vinculación a plazo fijo por cuatro (4) años más, hasta 25 de junio de 2029, de esa fecha en adelante inmediatamente se convierte en indefinido.
+2. Verifica que todos los contratos estén por escrito y con indicación clara de la fecha de inicio y fin.
+3. Controla las fechas para evitar prórrogas automáticas no deseadas, en adelante preferiblemente realiza las prórrogas por escrito.
+4. Verifica cuántas prórrogas han tenido los contratos hasta la fecha, evalúa cuáles cargos requieren continuidad y la posibilidad de replantear su modelo a contratos indefinidos lo cual puedes hacer mediante otrosí.
+5. Reevalúa qué cargos requieren realmente una vinculación temporal.`,
+            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
           },
           {
@@ -472,7 +487,7 @@
             recommendations: {
               "Sí": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`,
               "No": `
-                    Ajusta todos los contratos vigentes para incluir una duración específica y clara. La ambigüedad da lugar a que el contrato se interprete como a término indefinido.`
+Ajusta todos los contratos vigentes para incluir una duración específica y clara. La ambigüedad da lugar a que el contrato se interprete como a término indefinido.`
             }
           },
           {
@@ -480,10 +495,10 @@
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    1. Considera realizar todas las prórrogas de manera formal y por escrito.
-                    2. Recuerda que en adelante desde la cuarta prórroga en adelante la duración no puede ser inferior a 1 año.
-                    3. Implementa un sistema de control que te alerte sobre la cantidad y duración de las prórrogas firmadas.
-                    4. Evalúa la viabilidad de contratar directamente a término indefinido cuando no este justificada la duración temporal del contrato.`,
+1. Considera realizar todas las prórrogas de manera formal y por escrito.
+2. Recuerda que en adelante desde la cuarta prórroga en adelante la duración no puede ser inferior a 1 año.
+3. Implementa un sistema de control que te alerte sobre la cantidad y duración de las prórrogas firmadas.
+4. Evalúa la viabilidad de contratar directamente a término indefinido cuando no este justificada la duración temporal del contrato.`,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
           },
@@ -492,12 +507,12 @@
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    1. Verifica que la obra o labor esté claramente definida en el contrato, y que exista un vínculo evidente entre el objeto del contrato y una actividad clara, temporal y delimitada.
-                    2. Evita el uso del contrato por obra o labor para tareas permanentes o estructurales del negocio. Esto puede considerarse fraude laboral y conlleva la conversión del contrato a término indefinido.
-                    3. Fortalece tus procesos de control y seguimiento del objeto contratado, ya que ahora se exige mayor carga administrativa para justificar este tipo de vinculación.
-                    4. Revisa si el personal que actualmente tienes contratado bajo esta modalidad debe ser migrado a contratos a término indefinido, especialmente si desempeñan funciones misionales o de duración permanente.
-                    5. Revisa y documenta claramente la finalización de las actividades pactadas. Es fundamental dejar trazabilidad sobre el cierre de la obra o labor.
-                    6. Si requieres que el trabajador continúe con nuevas labores asociadas a otra obra o necesidad puntual, suscribe por escrito un nuevo contrato o amplía el anterior mediante otrosí especificando el nuevo objeto y duración.`,
+1. Verifica que la obra o labor esté claramente definida en el contrato, y que exista un vínculo evidente entre el objeto del contrato y una actividad clara, temporal y delimitada.
+2. Evita el uso del contrato por obra o labor para tareas permanentes o estructurales del negocio. Esto puede considerarse fraude laboral y conlleva la conversión del contrato a término indefinido.
+3. Fortalece tus procesos de control y seguimiento del objeto contratado, ya que ahora se exige mayor carga administrativa para justificar este tipo de vinculación.
+4. Revisa si el personal que actualmente tienes contratado bajo esta modalidad debe ser migrado a contratos a término indefinido, especialmente si desempeñan funciones misionales o de duración permanente.
+5. Revisa y documenta claramente la finalización de las actividades pactadas. Es fundamental dejar trazabilidad sobre el cierre de la obra o labor.
+6. Si requieres que el trabajador continúe con nuevas labores asociadas a otra obra o necesidad puntual, suscribe por escrito un nuevo contrato o amplía el anterior mediante otrosí especificando el nuevo objeto y duración.`,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
           }
@@ -512,11 +527,11 @@
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    1. Verifica que estás cumpliendo con la cuota mínima obligatoria conforme al número de trabajadores.
-                    2. Evalúa si te resulta más conveniente monetizar la cuota o vincular directamente al aprendiz, teniendo en cuenta el impacto económico y operativo.
-                    3. Asegúrate de formalizar correctamente el contrato de aprendizaje bajo los nuevos parámetros, según el cual ahora se considera como Contrato a término fijo especial.
-                    4. Mantén registros actualizados y certificados del tiempo en práctica, ya que ahora se reconoce como experiencia laboral.
-                    5. Evalúa la viabilidad de implementar la modalidad de formación dual, que integra teoría y práctica de manera simultánea con acompañamiento conjunto entre la empresa y el Sena. Esta modalidad te ayuda a formar nuevos talentos alineado a las necesidades reales del negocio, ya que la empresa participa activamente en el diseño del plan formativo del aprendiz.`,
+1. Verifica que estás cumpliendo con la cuota mínima obligatoria conforme al número de trabajadores.
+2. Evalúa si te resulta más conveniente monetizar la cuota o vincular directamente al aprendiz, teniendo en cuenta el impacto económico y operativo.
+3. Asegúrate de formalizar correctamente el contrato de aprendizaje bajo los nuevos parámetros, según el cual ahora se considera como Contrato a término fijo especial.
+4. Mantén registros actualizados y certificados del tiempo en práctica, ya que ahora se reconoce como experiencia laboral.
+5. Evalúa la viabilidad de implementar la modalidad de formación dual, que integra teoría y práctica de manera simultánea con acompañamiento conjunto entre la empresa y el Sena. Esta modalidad te ayuda a formar nuevos talentos alineado a las necesidades reales del negocio, ya que la empresa participa activamente en el diseño del plan formativo del aprendiz.`,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
           },
@@ -525,14 +540,14 @@
             type: "yes_no",
             recommendations: {
               "Sí": `Debes tener en cuenta los cambios introducidos por la reforma laboral respecto a trabajadores migrantes:
-                    Recomendaciones clave:
-                    1. Garantiza igualdad de derechos laborales y de seguridad social a las personas extranjeras, sin importar su estatus migratorio.
-                    2. Ya no necesitas una visa de trabajo previa, por lo cual una vez se haya suscrito el contrato de trabajo, ponte en contacto con Migración Colombia quien debe facilitar el proceso de regularización migratoria.
-                    3. Mantente atento a la reglamentación que expedirá el Ministerio de Relaciones Exteriores sobre el proceso de regularización.
-                    4. Cumple con las obligaciones de reporte vigentes:
-                    4.1 Notificar a Migración Colombia el inicio, terminación o cualquier novedad del contrato laboral con extranjeros, a través de la plataforma SIRE.
-                    4.2 Reportar ante el Ministerio del Trabajo el inicio y terminación del contrato a través del RUTEC.
-                    5. Evalúa la posibilidad de aplicar el teletrabajo transnacional, si la naturaleza del cargo permite desarrollar el trabajo a distancia.`,
+Recomendaciones clave:
+1. Garantiza igualdad de derechos laborales y de seguridad social a las personas extranjeras, sin importar su estatus migratorio.
+2. Ya no necesitas una visa de trabajo previa, por lo cual una vez se haya suscrito el contrato de trabajo, ponte en contacto con Migración Colombia quien debe facilitar el proceso de regularización migratoria.
+3. Mantente atento a la reglamentación que expedirá el Ministerio de Relaciones Exteriores sobre el proceso de regularización.
+4. Cumple con las obligaciones de reporte vigentes:
+4.1 Notificar a Migración Colombia el inicio, terminación o cualquier novedad del contrato laboral con extranjeros, a través de la plataforma SIRE.
+4.2 Reportar ante el Ministerio del Trabajo el inicio y terminación del contrato a través del RUTEC.
+5. Evalúa la posibilidad de aplicar el teletrabajo transnacional, si la naturaleza del cargo permite desarrollar el trabajo a distancia.`,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
           }
@@ -599,13 +614,13 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-              1. Asegúrate de actualizar el RIT conforme a las nuevas exigencias de la reforma laboral, en especial lo relacionado con el respeto a la dignidad humana, la no discriminación, los nuevos permisos remunerados, el día de descanso obligatorio, los requisitos para flexibilizar la jornada laboral a los trabajadores con responsabilidades del cuidado, las nuevas formas de trabajo a distancia. 
-              2. Publica el RIT en medios digitales accesibles que sean del control de la empresa. 
-              3. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`,
+1. Asegúrate de actualizar el RIT conforme a las nuevas exigencias de la reforma laboral, en especial lo relacionado con el respeto a la dignidad humana, la no discriminación, los nuevos permisos remunerados, el día de descanso obligatorio, los requisitos para flexibilizar la jornada laboral a los trabajadores con responsabilidades del cuidado, las nuevas formas de trabajo a distancia. 
+2. Publica el RIT en medios digitales accesibles que sean del control de la empresa. 
+3. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`,
               "No": `
-              1. Si tienes más de 10 empleados el RIT es obligatorio. Inicia el diseño del reglamento a la mayor brevedad posible. 
-              2. Publica el RIT en medios digitales accesibles que sean del control de la empresa. 
-              3. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`
+1. Si tienes más de 10 empleados el RIT es obligatorio. Inicia el diseño del reglamento a la mayor brevedad posible. 
+2. Publica el RIT en medios digitales accesibles que sean del control de la empresa. 
+3. Asegúrate de diseñar un RIT adecuado para entornos digitales con el fin de facilitar su comprensión.`
             }
           },
           {
@@ -627,11 +642,11 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    El recargo nocturno se mantiene en el 35% por hora labor, pero  desde el  25 de Diciembre de 2025, se aplicará desde las 7:00 p.m. hasta las 6:00 a.m., por lo cual debes implementar las siguientes acciones: 
-                    1. Actualizar sistemas de nómina para que se liquide el  recargo nocturno desde la hora correcta.
-                    2. Evaluar el impacto económico: Proyectar el aumento en los costos laborales y considerar posibles medidas de eficiencia operativa o redistribución de turnos.
-                    3. Capacitar al personal de talento humano y supervisores: Para asegurar que comprendan el nuevo esquema, puedan hacer seguimiento adecuado.
-                    4. Mantener registros claros de las jornadas y recargos pagados, ya que el Ministerio del Trabajo puede exigir soportes y aplicar sanciones en caso de incumplimiento.
+El recargo nocturno se mantiene en el 35% por hora labor, pero  desde el  25 de Diciembre de 2025, se aplicará desde las 7:00 p.m. hasta las 6:00 a.m., por lo cual debes implementar las siguientes acciones: 
+1. Actualizar sistemas de nómina para que se liquide el  recargo nocturno desde la hora correcta.
+2. Evaluar el impacto económico: Proyectar el aumento en los costos laborales y considerar posibles medidas de eficiencia operativa o redistribución de turnos.
+3. Capacitar al personal de talento humano y supervisores: Para asegurar que comprendan el nuevo esquema, puedan hacer seguimiento adecuado.
+4. Mantener registros claros de las jornadas y recargos pagados, ya que el Ministerio del Trabajo puede exigir soportes y aplicar sanciones en caso de incumplimiento.
 `,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
@@ -641,14 +656,14 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    El tratamiento de estos días se ha unificado bajo el concepto de “día de descanso obligatorio”, y el recargo por trabajar en ellos se ajusta al 100% de manera progresiva:
-                    A partir del 1° de julio de 2025, subirá al 80%;
-                    desde el 1° de julio de 2026, será del 90%, 
-                    a partir del 1° de julio de 2027 será del 100%, 
-                    Aunque los empleadores pueden acogerse a este último desde ya si así lo deciden.
-                    1. Evalúa el impacto financiero de este incremento en tu nomina
-                    2. Evalúa la pertinencia de pactar (por escrito) que el día de descanso obligatorio sea distinto al domingo. 
-                    3. Capacitar a RRHH y supervisores para que puedan realizar un adecuado control a la rotación de los turno laborales, a fin de evitar conflictos legales.
+El tratamiento de estos días se ha unificado bajo el concepto de “día de descanso obligatorio”, y el recargo por trabajar en ellos se ajusta al 100% de manera progresiva:
+A partir del 1° de julio de 2025, subirá al 80%;
+desde el 1° de julio de 2026, será del 90%, 
+a partir del 1° de julio de 2027 será del 100%, 
+Aunque los empleadores pueden acogerse a este último desde ya si así lo deciden.
+1. Evalúa el impacto financiero de este incremento en tu nomina
+2. Evalúa la pertinencia de pactar (por escrito) que el día de descanso obligatorio sea distinto al domingo. 
+3. Capacitar a RRHH y supervisores para que puedan realizar un adecuado control a la rotación de los turno laborales, a fin de evitar conflictos legales.
 `,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
@@ -658,8 +673,8 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                  Debes prepararte para los impactos en costos laborales, asociados a: Reducción de la jornada laboral, aumento de recargos nocturnos, y aumento por trabajo en días de descanso obligatorio (antes domingos y festivos).
-                  Realiza una valoración financiera que permita medir el impacto y te ayude a tomar decisiones estratégicas, que pueden incluir la implementación de la jornada especial de turnos continuos de  6 horas diarias / 36 horas semanales, permitiendo operar la empresa 24/7 reduciendo el impacto económico de recargos nocturnos, o por trabajo en domingos o festivos.
+Debes prepararte para los impactos en costos laborales, asociados a: Reducción de la jornada laboral, aumento de recargos nocturnos, y aumento por trabajo en días de descanso obligatorio (antes domingos y festivos).
+Realiza una valoración financiera que permita medir el impacto y te ayude a tomar decisiones estratégicas, que pueden incluir la implementación de la jornada especial de turnos continuos de  6 horas diarias / 36 horas semanales, permitiendo operar la empresa 24/7 reduciendo el impacto económico de recargos nocturnos, o por trabajo en domingos o festivos.
 `,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
@@ -669,15 +684,15 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    1. Revisa si llevas un registro actualizado por trabajador y por tipo de hora (diurna/nocturna). Este registro debe incluir mínimo: Nombre, actividad desarrollada, número de horas y si son diurnas o nocturna. 
-                    2. Asegúrate de que el registro se mantenga actualizado, sea auditable y se entregue al trabajador si lo solicita, con comprobante de pago.
-                    3. Implementa inmediatamente un sistema confiable para controlar el número de horas extras que laboran tus empleados. 
-                    4. Realiza una auditoría interna urgente y asegúrate que tus empleados no laboren mas de 2 horas extras día y 12 a la semana.
-                    5. Verifica que las horas extras estén correctamente liquidadas y pagadas con sus recargos. Soporta estos pagos en la nómina y entrega comprobantes al trabajador. Un error de cálculo puede llevar a la suspensión de la facultad para trabajar horas extra por 6 meses y otras sanciones.
-                    6. Recuerda, ya no necesitas autorización previa para que tus empleados laboren hora extra.
+1. Revisa si llevas un registro actualizado por trabajador y por tipo de hora (diurna/nocturna). Este registro debe incluir mínimo: Nombre, actividad desarrollada, número de horas y si son diurnas o nocturna. 
+2. Asegúrate de que el registro se mantenga actualizado, sea auditable y se entregue al trabajador si lo solicita, con comprobante de pago.
+3. Implementa inmediatamente un sistema confiable para controlar el número de horas extras que laboran tus empleados. 
+4. Realiza una auditoría interna urgente y asegúrate que tus empleados no laboren mas de 2 horas extras día y 12 a la semana.
+5. Verifica que las horas extras estén correctamente liquidadas y pagadas con sus recargos. Soporta estos pagos en la nómina y entrega comprobantes al trabajador. Un error de cálculo puede llevar a la suspensión de la facultad para trabajar horas extra por 6 meses y otras sanciones.
+6. Recuerda, ya no necesitas autorización previa para que tus empleados laboren hora extra.
 `,
               "No": `
-                      En tu caso no se requieren ajustes adicionales derivados de la nueva norma. `
+En tu caso no se requieren ajustes adicionales derivados de la nueva norma. `
             }
           }
         ]
@@ -691,13 +706,13 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    Evalúa cuántos trabajadores con discapacidad tienes vinculados y verifica si cumples con este mínimo obligatorio:
-                    •	Hasta 500 empleados: al menos 2 trabajadores con discapacidad por cada 100.
-                    •	Más de 500 empleados: los anteriores más 1 adicional por cada tramo de 100.
-                    Al momento de la vinculación asegura que los trabajadores con discapacidad cuenten con la certificación válida del Ministerio de Salud.
-                    Si existen razones técnicas o de salud ocupacional que impidan la contratación de personas en situación de discapacidad para determinados cargos documéntalo adecuadamente para que puedas informarlo al Ministerio del Trabajo.
-                    A partir del segundo año de entrada en vigencia de la reforma (julio de 2026), el cumplimiento de las cuotas de vinculación de personas con discapacidad será obligatorio. Por ello, es fundamental analizar desde ahora tu planta de cargos, identificar puestos viables para esta población, y planear con tiempo los ajustes razonables que permitan su contratación efectiva.
-                    Capacita al equipo de Recursos Humanos sobre las obligaciones de registro obligatorio de contratos en la plataforma del Ministerio del Trabajo, y sensibiliza a los líderes y supervisores sobre discapacidad e inclusión laboral, para que estén preparados para gestionar estos procesos de forma adecuada.
+Evalúa cuántos trabajadores con discapacidad tienes vinculados y verifica si cumples con este mínimo obligatorio:
+• Hasta 500 empleados: al menos 2 trabajadores con discapacidad por cada 100.
+• Más de 500 empleados: los anteriores más 1 adicional por cada tramo de 100.
+Al momento de la vinculación asegura que los trabajadores con discapacidad cuenten con la certificación válida del Ministerio de Salud.
+Si existen razones técnicas o de salud ocupacional que impidan la contratación de personas en situación de discapacidad para determinados cargos documéntalo adecuadamente para que puedas informarlo al Ministerio del Trabajo.
+A partir del segundo año de entrada en vigencia de la reforma (julio de 2026), el cumplimiento de las cuotas de vinculación de personas con discapacidad será obligatorio. Por ello, es fundamental analizar desde ahora tu planta de cargos, identificar puestos viables para esta población, y planear con tiempo los ajustes razonables que permitan su contratación efectiva.
+Capacita al equipo de Recursos Humanos sobre las obligaciones de registro obligatorio de contratos en la plataforma del Ministerio del Trabajo, y sensibiliza a los líderes y supervisores sobre discapacidad e inclusión laboral, para que estén preparados para gestionar estos procesos de forma adecuada.
 `,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
@@ -707,15 +722,15 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    Debes estar preparado para recibir solicitudes de flexibilidad laboral conforme a la nueva regulación. Asegúrate de:
-                    1. Establecer un protocolo claro para evaluar solicitudes de flexibilización de la jornada laboral o implementación de teletrabajo.
-                    2. Cuando la recibas documenta adecuadamente la solicitud, la evaluación y la respuesta que se dé, la cual debe entregarse en un plazo máximo de 15 días hábiles.
-                    3. Incorporar como se regulará el ejercicio de este derecho en tu Reglamento Interno de Trabajo y contrato laboral.
+Debes estar preparado para recibir solicitudes de flexibilidad laboral conforme a la nueva regulación. Asegúrate de:
+1. Establecer un protocolo claro para evaluar solicitudes de flexibilización de la jornada laboral o implementación de teletrabajo.
+2. Cuando la recibas documenta adecuadamente la solicitud, la evaluación y la respuesta que se dé, la cual debe entregarse en un plazo máximo de 15 días hábiles.
+3. Incorporar como se regulará el ejercicio de este derecho en tu Reglamento Interno de Trabajo y contrato laboral.
 `,
               "No": `Aunque hoy no tengas casos identificados, es recomendable:
-                    1. Incluir este tema en el diagnóstico de clima laboral o encuestas internas, para anticiparte.
-                    2. Actualizar políticas internas para estar preparado ante futuras solicitudes.
-                    3. Incorporar como se regulara este derecho en tu Reglamento Interno de Trabajo y contrato laboral. 
+1. Incluir este tema en el diagnóstico de clima laboral o encuestas internas, para anticiparte.
+2. Actualizar políticas internas para estar preparado ante futuras solicitudes.
+3. Incorporar como se regulara este derecho en tu Reglamento Interno de Trabajo y contrato laboral. 
 `
             }
           },
@@ -724,10 +739,11 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    Debes tomar medidas inmediatas para cumplir con la nueva regulación:
-                    1. Realiza un diagnóstico de equidad salarial para identificar y justificar cualquier diferencia con base en criterios objetivos.
-                    2. Alinea los perfiles de cargo y documenta las razones técnicas detrás de cada diferenciación salarial.
-                    3. Diseña e implementa una política de equidad salarial que corrija y prevenga nuevas brechas salariales.
+1. Debes tomar medidas inmediatas para cumplir con la nueva regulación:
+2. Realiza un diagnóstico de equidad salarial para identificar y justificar cualquier diferencia con base en criterios objetivos.
+3. Alinea los perfiles de cargo y documenta las razones técnicas detrás de cada diferenciación salarial.
+4. Diseña e implementa una política de equidad salarial que corrija y prevenga nuevas brechas salariales.
+
 `,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
@@ -737,15 +753,15 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    Debes ajustar tus políticas actuales para cumplir con los nuevos lineamientos de la Ley 2466 de 2025, que amplían el alcance del acoso laboral y sexual. Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan  de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
-                    Además, debes integrar una perspectiva de género, con acciones específicas frente al acoso por razón de género y violencia sexual.
-                    Por último, asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan  un proceso claro para recibir, hacer seguimiento y atender las quejas.
+Debes ajustar tus políticas actuales para cumplir con los nuevos lineamientos de la Ley 2466 de 2025, que amplían el alcance del acoso laboral y sexual. Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan  de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
+Además, debes integrar una perspectiva de género, con acciones específicas frente al acoso por razón de género y violencia sexual.
+Por último, asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan  un proceso claro para recibir, hacer seguimiento y atender las quejas.
 `,
               "No": `
-                    Debes actuar de inmediato. No contar con Comité y protocolos te expone a sanciones y responsabilidades legales.
-                    1. Conforma el Comité de Convivencia Laboral de acuerdo con la normativa.
-                    2. Diseña una política de acoso laboral y una política de acoso sexual que cumpla con los nuevos lineamientos de la Ley 2466 de 2025, que amplía el alcance del acoso laboral y sexual. Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
-                    3. Asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan  un proceso claro para recibir, hacer seguimiento y atender las quejas.`
+Debes actuar de inmediato. No contar con Comité y protocolos te expone a sanciones y responsabilidades legales.
+1. Conforma el Comité de Convivencia Laboral de acuerdo con la normativa.
+2. Diseña una política de acoso laboral y una política de acoso sexual que cumpla con los nuevos lineamientos de la Ley 2466 de 2025, que amplía el alcance del acoso laboral y sexual. Ahora debes incluir el tramite a seguir en caso de que los comportamientos provengan de clientes, proveedores, terceros, y en espacios digitales o fuera del lugar de trabajo.
+3. Asegúrate que los miembros de Comité de Convivencia Laboral estén capacitados frente al nuevo enfoque del acoso laboral y que tengan  un proceso claro para recibir, hacer seguimiento y atender las quejas.`
             }
           }
         ]
@@ -759,17 +775,17 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    Debes revisar y ajustar tu estrategia de contratación indirecta, ya que la reforma laboral limita el uso de EST únicamente a las siguientes causales:
-                    •	Reemplazo de personal ausente temporalmente.
-                    •	Aumento ocasional de la producción.
-                    •	Labores transitorias que no excedan seis meses.
-                    Recomendaciones clave:
-                    1. Identifica claramente qué cargos o funciones son realmente temporales, como picos de producción, reemplazos por licencias u otras ausencias justificadas.
-                    2. Documenta la causa específica del encargo temporal tanto en el contrato comercial con la EST como en los contratos laborales de los trabajadores en misión.
-                    3. Verifica que los trabajadores en misión no estén desempeñando funciones estructurales o permanentes dentro de tu operación.
-                    4. Implementa controles internos para evitar exceder los límites legales de duración o causalidad.
-                    5. Evita la rotación de personal entre diferentes EST para las mismas funciones, ya que esto puede ser considerado intermediación laboral ilegal.
-                    6. Capacita a líderes y personal de RRHH sobre los riesgos legales y sanciones.
+Debes revisar y ajustar tu estrategia de contratación indirecta, ya que la reforma laboral limita el uso de EST únicamente a las siguientes causales:
+•	Reemplazo de personal ausente temporalmente.
+•	Aumento ocasional de la producción.
+•	Labores transitorias que no excedan seis meses.
+Recomendaciones clave:
+1. Identifica claramente qué cargos o funciones son realmente temporales, como picos de producción, reemplazos por licencias u otras ausencias justificadas.
+2. Documenta la causa específica del encargo temporal tanto en el contrato comercial con la EST como en los contratos laborales de los trabajadores en misión.
+3. Verifica que los trabajadores en misión no estén desempeñando funciones estructurales o permanentes dentro de tu operación.
+4. Implementa controles internos para evitar exceder los límites legales de duración o causalidad.
+5. Evita la rotación de personal entre diferentes EST para las mismas funciones, ya que esto puede ser considerado intermediación laboral ilegal.
+6. Capacita a líderes y personal de RRHH sobre los riesgos legales y sanciones.
 `,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
@@ -785,16 +801,16 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             type: "yes_no",
             recommendations: {
               "Sí": `
-                    1. Formaliza el teletrabajo mediante contrato escrito: Incluye condiciones específicas como la modalidad, lugar de ejecución, disponibilidad, medios tecnológicos, y controles sobre el cumplimiento.
-                    2. Incluye cláusula de reversibilidad: El contrato debe establecer que el teletrabajo no es obligatorio para el trabajador, y que puede regresar a la modalidad presencial bajo ciertas condiciones acordadas.
-                    3. Diseña o actualiza la política de teletrabajo: Debe contemplar la seguridad digital, manejo de la información, disponibilidad del trabajador, desconexión laboral, y cumplimiento del SG-SST.
-                    4. Paga el auxilio de conectividad digital:
-                      •	Es obligatorio si el salario del teletrabajador es igual o inferior a 2 SMMLV.
-                      •	Este auxilio reemplaza el auxilio de transporte en la modalidad remota o de teletrabajo.
-                    5. Evalúa el teletrabajo transnacional:
-                      •	Puedes implementarlo si las funciones se pueden desempeñar desde el exterior.
-                    6. Asegura la protección de la salud en el entorno remoto: Incluye al teletrabajador en la evaluación de riesgos del SG-SST y entrega recomendaciones sobre ergonomía, pausas activas y riesgos psicosociales.
-                    7. Implementa canales de reporte y control claros: Utiliza medios tecnológicos para documentar la jornada laboral, cumplimiento de funciones, y entrega de resultados.
+1. Formaliza el teletrabajo mediante contrato escrito: Incluye condiciones específicas como la modalidad, lugar de ejecución, disponibilidad, medios tecnológicos, y controles sobre el cumplimiento.
+2. Incluye cláusula de reversibilidad: El contrato debe establecer que el teletrabajo no es obligatorio para el trabajador, y que puede regresar a la modalidad presencial bajo ciertas condiciones acordadas.
+3. Diseña o actualiza la política de teletrabajo: Debe contemplar la seguridad digital, manejo de la información, disponibilidad del trabajador, desconexión laboral, y cumplimiento del SG-SST.
+4. Paga el auxilio de conectividad digital:
+•	Es obligatorio si el salario del teletrabajador es igual o inferior a 2 SMMLV.
+•	Este auxilio reemplaza el auxilio de transporte en la modalidad remota o de teletrabajo.
+5. Evalúa el teletrabajo transnacional:
+•	Puedes implementarlo si las funciones se pueden desempeñar desde el exterior.
+6. Asegura la protección de la salud en el entorno remoto: Incluye al teletrabajador en la evaluación de riesgos del SG-SST y entrega recomendaciones sobre ergonomía, pausas activas y riesgos psicosociales.
+7. Implementa canales de reporte y control claros: Utiliza medios tecnológicos para documentar la jornada laboral, cumplimiento de funciones, y entrega de resultados.
 `,
               "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
@@ -808,6 +824,7 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
       initialScreen.classList.remove('hidden');
       sectionsOverviewScreen.classList.add('hidden');
       questionsScreen.classList.add('hidden');
+      interstitialScreen.classList.add('hidden'); // Asegurarse de que la intersticial esté oculta
       completionScreen.classList.add('hidden');
       // Reiniciar el estado de la aplicación
       currentSectionIndex = 0;
@@ -841,8 +858,8 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
     // Manejador del botón "Iniciar mi autodiagnóstico"
     startAutodiagnosisBtn.addEventListener('click', function () {
       sectionsOverviewScreen.classList.add('hidden');
-      questionsScreen.classList.remove('hidden');
-      loadQuestion();
+      // Al iniciar, mostrar la pantalla intersticial para la primera sección
+      showInterstitialScreen(true); // Pasar 'true' para indicar que es la primera sección
     });
 
     // Manejador del botón "Volver" desde la pantalla de resumen de secciones
@@ -852,6 +869,7 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
 
     // Función para cargar la pregunta actual
     function loadQuestion() {
+      console.log(`[loadQuestion] Loading question. Section: ${currentSectionIndex}, Question: ${currentQuestionIndex}`);
       const section = sectionsData[currentSectionIndex];
       const question = section.questions[currentQuestionIndex];
 
@@ -860,8 +878,10 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
 
       // Lógica para determinar si la pregunta "¿Tienes menos de 10 trabajadores?" debe mostrarse
       if (currentSectionIndex === 2 && currentQuestionIndex === 2 && question.type === "yes_no_conditional") {
-        const sectorAnswer = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
-        const incomeAnswer = history.find(item => item.questionText === sectionsData[2].questions[1].text)?.answer;
+        const sectorQuestion = sectionsData[2].questions[0];
+        const incomeQuestion = sectionsData[2].questions[1];
+        const sectorAnswer = history.find(item => item.questionText === sectorQuestion.text)?.answer;
+        const incomeAnswer = history.find(item => item.questionText === incomeQuestion.text)?.answer;
 
         let tempCompanyClassification = "";
         if (incomeAnswer) {
@@ -874,6 +894,7 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
         // Esta pregunta SOLO se salta si la empresa es Mediana o Gran.
         // Se muestra para Microempresa y Pequeña, independientemente del sector.
         if (!(tempCompanyClassification === "Microempresa" || tempCompanyClassification === "Pequeña")) {
+          console.log("[loadQuestion] Skipping conditional question for Mediana/Gran company.");
           currentQuestionIndex++; // Salta esta pregunta
           loadQuestion(); // Carga la siguiente pregunta
           return; // Sale de la función para evitar que se cargue la pregunta actual
@@ -919,8 +940,9 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
         selectedAnswer = null; // Reiniciar respuesta seleccionada para nuevas preguntas
       }
 
-      updateNavigationButtons();
-      updateProgressBar();
+      updateNavigationButtons(); // Call this function to update button states
+      updateProgressBar(); // Asegurarse de que la barra de progreso se actualice al cargar la pregunta
+      console.log("[loadQuestion] Question loaded successfully.");
     }
 
     // Función auxiliar para crear botones de opción
@@ -941,79 +963,95 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
       button.classList.add('selected');
       selectedAnswer = value;
       showRecommendation(sectionsData[currentSectionIndex].questions[currentQuestionIndex], selectedAnswer);
+      updateNavigationButtons(); // Update button states after selecting an option
     }
 
     // **NUEVA FUNCIÓN AUXILIAR: Formatea el texto de la recomendación con párrafos y viñetas**
     function formatRecommendationText(text) {
-      let formattedHtml = '';
-      const lines = text.split('\n').map(line => line.trim()); // Dividir por saltos de línea y limpiar espacios
-      let inList = false;
+        let formattedHtml = '';
+        // Reemplazar saltos de línea seguidos por un número y punto (ej: "1. Texto") con un marcador temporal para luego convertir a lista
+        // Esto es para manejar los numerales que el usuario ha añadido
+        let processedText = text.replace(/(\d+\.\s*)/g, '\n• ');
+        const lines = processedText.split('\n').map(line => line.trim()).filter(line => line !== ''); // Dividir por saltos de línea, limpiar espacios y remover líneas vacías
+        let inList = false;
 
-      lines.forEach(line => {
-        // Si la línea comienza con un bullet (• o -)
-        if (line.startsWith('•') || line.startsWith('-')) {
-          if (!inList) {
-            formattedHtml += '<ul>'; // Iniciar nueva lista si no estamos ya en una
-            inList = true;
-          }
-          formattedHtml += `<li>${line.substring(1).trim()}</li>`; // Quitar el bullet y añadir como item de lista
-        } else {
-          if (inList) {
-            formattedHtml += '</ul>'; // Cerrar lista si estábamos en una
-            inList = false;
-          }
-          if (line !== '') { // Si la línea no está vacía, es un párrafo
-            formattedHtml += `<p>${line}</p>`;
-          }
+        lines.forEach(line => {
+            // Si la línea comienza con un bullet (•)
+            if (line.startsWith('•')) {
+                if (!inList) {
+                    formattedHtml += '<ul>'; // Iniciar nueva lista si no estamos ya en una
+                    inList = true;
+                }
+                formattedHtml += `<li>${line.substring(1).trim()}</li>`; // Quitar el bullet y añadir como item de lista
+            } else {
+                if (inList) {
+                    formattedHtml += '</ul>'; // Cerrar lista si estábamos en una
+                    inList = false;
+                }
+                formattedHtml += `<p>${line}</p>`; // Es un párrafo
+            }
+        });
+
+        if (inList) { // Asegurarse de cerrar cualquier lista abierta al final
+            formattedHtml += '</ul>';
         }
-      });
-
-      if (inList) { // Asegurarse de cerrar cualquier lista abierta al final
-        formattedHtml += '</ul>';
-      }
-      return formattedHtml;
+        return formattedHtml;
     }
+
 
     // Función para mostrar la recomendación
     function showRecommendation(question, answer) {
       let recommendation = '';
 
+      // Special handling for the first question of Section 3 (Sector question)
+      if (currentSectionIndex === 2 && currentQuestionIndex === 0) {
+        // No recommendation is displayed for the sector selection itself.
+        // The classification and recommendation depend on the *next* question (income).
+        recommendationDiv.classList.add('hidden');
+        recommendationTextElement.innerHTML = '';
+        return; // Exit the function as no recommendation is needed here
+      }
+
       if (question.type === "conditional_income") {
-        const sectorAnswer = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
+        // For the income question, we need the sector answer from history (which was the previous question)
+        const sectorQuestion = sectionsData[2].questions[0];
+        const sectorAnswer = history.find(item => item.questionText === sectorQuestion.text)?.answer;
+
         let currentCompanyClassification = "";
-
-        const selectedIncomeOption = incomeThresholds[sectorAnswer]?.find(opt => opt.value === answer);
-        if (selectedIncomeOption) {
-          currentCompanyClassification = selectedIncomeOption.classification;
+        if (sectorAnswer && incomeThresholds[sectorAnswer]) {
+          const selectedIncomeOption = incomeThresholds[sectorAnswer].find(opt => opt.value === answer);
+          if (selectedIncomeOption) {
+            currentCompanyClassification = selectedIncomeOption.classification;
+          }
         }
-        companyClassification = currentCompanyClassification; // Actualizar la clasificación global
+        companyClassification = currentCompanyClassification; // Update global classification
 
-        // Lógica de recomendación basada en la clasificación
+        // Logic for recommendation based on classification
         if (companyClassification === "Mediana" || companyClassification === "Gran") {
-          recommendation = question.recommendations["Mediana"]; // Esta clave tiene el texto para RIT obligatorio (aplica a Mediana y Gran)
-        } else { // Microempresa o Pequeña (independientemente del sector)
-          recommendation = question.recommendations["continue_to_next"]; // Texto para continuar a la siguiente pregunta
+          recommendation = question.recommendations["Mediana"];
+        } else { // Microempresa or Pequeña
+          recommendation = question.recommendations["continue_to_next"];
         }
       } else if (question.type === "yes_no_conditional") {
-        // Esta pregunta es "¿Tienes menos de 10 trabajadores?"
-        // companyClassification ya debería estar actualizado por la pregunta anterior de ingresos
+        // This question is "¿Tienes menos de 10 trabajadores?"
+        // companyClassification should already be updated by the previous income question
         if (companyClassification === "Microempresa" || companyClassification === "Pequeña") {
           if (answer === "Sí") {
-            recommendation = question.recommendations["Sí"]; // Recomendación para menos de 10 empleados
+            recommendation = question.recommendations["Sí"];
           } else {
-            recommendation = question.recommendations["No"]; // Recomendación para 10 o más empleados (RIT obligatorio)
+            recommendation = question.recommendations["No"];
           }
         } else {
-          // Esto no debería ser alcanzado si la lógica de salto en loadQuestion funciona correctamente
-          recommendation = "Esta pregunta no aplica para tu tipo de empresa."; // Fallback
+          // This case should ideally not be reached if loadQuestion skip logic is correct
+          recommendation = "Esta pregunta no aplica para tu tipo de empresa.";
         }
       } else {
+        // For all other regular questions (yes_no, other multiple_choice)
         recommendation = question.recommendations[answer];
       }
 
       if (recommendation) {
         recommendationDiv.classList.remove('hidden');
-        // Usar la nueva función para formatear el texto de la recomendación
         recommendationTextElement.innerHTML = formatRecommendationText(recommendation);
       } else {
         recommendationDiv.classList.add('hidden');
@@ -1022,21 +1060,26 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
 
     // Función para avanzar a la siguiente pregunta o sección
     function nextQuestion() {
+      console.log(`[nextQuestion] Attempting to advance. Current Section: ${currentSectionIndex}, Current Question: ${currentQuestionIndex}`);
       const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
 
       if (selectedAnswer === null) {
+        console.log("[nextQuestion] No answer selected. Displaying warning.");
         recommendationDiv.classList.remove('hidden');
         recommendationTextElement.innerHTML = formatRecommendationText("Por favor, selecciona una opción para continuar."); // Usar formatRecommendationText aquí también
         return;
       } else {
+        console.log(`[nextQuestion] Answer selected: ${selectedAnswer}. Pushing to history.`);
         history.push({ questionText: currentQuestion.text, answer: selectedAnswer });
       }
 
       // Lógica para saltar preguntas condicionales en la Sección 3
       if (currentSectionIndex === 2) { // Sección 3: Procesos Disciplinarios y RIT
         if (currentQuestionIndex === 0) { // Pregunta de Sector
+          console.log("[nextQuestion] Section 3, Question 0 (Sector). Advancing to Question 1.");
           currentQuestionIndex++; // Avanzar a la pregunta de ingresos
         } else if (currentQuestionIndex === 1) { // Pregunta de Ingresos
+          console.log("[nextQuestion] Section 3, Question 1 (Income). Checking conditional skip.");
           const sector = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
           const incomeAnswer = history.find(item => item.questionText === sectionsData[2].questions[1].text)?.answer;
 
@@ -1051,49 +1094,84 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
 
           // Si es Mediana o Gran, salta la pregunta "¿Tienes menos de 10 trabajadores?" (índice 2)
           if (companyClassification === "Mediana" || companyClassification === "Gran") {
+            console.log("[nextQuestion] Company is Mediana/Gran. Skipping Question 2 (conditional).");
             currentQuestionIndex += 2; // Salta la pregunta condicional y va directamente a la siguiente
           } else { // Si es Microempresa o Pequeña (independientemente del sector), avanza a la pregunta "¿Tienes menos de 10 trabajadores?"
+            console.log("[nextQuestion] Company is Micro/Pequeña. Advancing to Question 2 (conditional).");
             currentQuestionIndex++;
           }
         } else {
+          console.log("[nextQuestion] Section 3, other question. Advancing normally.");
           currentQuestionIndex++; // Para las demás preguntas de la sección 3
         }
       } else {
+        console.log("[nextQuestion] Not Section 3. Advancing normally.");
         currentQuestionIndex++; // Para secciones que no son la 3
       }
 
 
       if (currentQuestionIndex < sectionsData[currentSectionIndex].questions.length) {
+        console.log("[nextQuestion] More questions in current section. Loading next question.");
         loadQuestion();
       } else {
         // Se terminó la sección actual, intentar pasar a la siguiente
-        currentSectionIndex++;
-        currentQuestionIndex = 0; // Reiniciar el índice de preguntas para la nueva sección
-        history = []; // Reiniciar historial para la nueva sección (o mantenerlo si se quiere un resumen final completo)
-
-        if (currentSectionIndex < sectionsData.length) {
-          loadQuestion(); // Cargar la primera pregunta de la nueva sección
-        } else {
-          // Todas las secciones completadas
-          questionsScreen.classList.add('hidden');
-          completionScreen.classList.remove('hidden');
-          // Aquí podrías enviar los datos recopilados o mostrar un resumen
-          console.log("Autodiagnóstico completado. Historial:", history);
+        if (currentSectionIndex < sectionsData.length - 1) { // Si hay más secciones
+            console.log("[nextQuestion] Section completed. Moving to next section interstitial.");
+            currentSectionIndex++;
+            currentQuestionIndex = 0; // Reiniciar el índice de preguntas para la nueva sección
+            showInterstitialScreen(false); // Mostrar pantalla intersticial para la siguiente sección
+        } else { // Todas las secciones completadas
+            console.log("[nextQuestion] All sections completed. Showing completion screen.");
+            questionsScreen.classList.add('hidden');
+            completionScreen.classList.remove('hidden');
+            console.log("Autodiagnóstico completado. Historial:", history);
         }
       }
+      console.log(`[nextQuestion] End of nextQuestion. New Section: ${currentSectionIndex}, New Question: ${currentQuestionIndex}`);
     }
+
+    // Manejador del botón de continuar en la pantalla intersticial
+    continueToNextSectionBtn.addEventListener('click', function() {
+        console.log("[continueToNextSectionBtn] Continuing to next section.");
+        interstitialScreen.classList.add('hidden');
+        questionsScreen.classList.remove('hidden');
+        loadQuestion();
+    });
+
+    // Función para mostrar la pantalla intersticial
+    function showInterstitialScreen(isFirstSection = false) {
+        console.log(`[showInterstitialScreen] Displaying interstitial. Is first section: ${isFirstSection}`);
+        questionsScreen.classList.add('hidden');
+        interstitialScreen.classList.remove('hidden');
+        const nextSection = sectionsData[currentSectionIndex];
+
+        if (isFirstSection) {
+            interstitialMainTitle.textContent = "¡Comencemos tu autodiagnóstico!";
+            interstitialDescription.textContent = "Estás a punto de iniciar la primera sección de preguntas. Esto te ayudará a entender cómo la Reforma Laboral 2025 afecta a tu empresa.";
+            nextSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${nextSection.title.toUpperCase()}`;
+        } else {
+            interstitialMainTitle.textContent = "¡Preparado para la siguiente sección!";
+            interstitialDescription.textContent = "Estás a punto de comenzar:";
+            nextSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${nextSection.title.toUpperCase()}`;
+        }
+        console.log(`[showInterstitialScreen] Interstitial for section: ${nextSection.title}`);
+    }
+
 
     // Función para volver a la pregunta o sección anterior
     function previousQuestion() {
+      console.log(`[previousQuestion] Attempting to go back. Current Section: ${currentSectionIndex}, Current Question: ${currentQuestionIndex}`);
       if (currentQuestionIndex > 0) {
         // Eliminar la última respuesta del historial al retroceder
         history.pop();
+        console.log("[previousQuestion] Popped last answer from history.");
 
         // Lógica inversa para preguntas condicionales en la Sección 3
         if (currentSectionIndex === 2) {
           // Si estamos en la pregunta del RIT (índice 3)
           // y la pregunta anterior (índice 2, "Tienes menos de 10 trabajadores?") fue saltada
           if (currentQuestionIndex === 3 && sectionsData[currentSectionIndex].questions[currentQuestionIndex - 1]?.type === "yes_no_conditional") {
+            console.log("[previousQuestion] Section 3, Question 3. Checking for conditional skip backtrack.");
             // Se necesita recalcular la clasificación de la empresa a partir del historial
             const sector = history.find(item => item.questionText === sectionsData[2].questions[0].text)?.answer;
             const incomeAnswer = history.find(item => item.questionText === sectionsData[2].questions[1].text)?.answer;
@@ -1108,41 +1186,75 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
 
             // Si la pregunta de "menos de 10 trabajadores" fue saltada (es decir, era Mediana o Gran), retrocede dos pasos
             if (tempCompanyClassification === "Mediana" || tempCompanyClassification === "Gran") {
+              console.log("[previousQuestion] Company was Mediana/Gran, skipping back 2 questions.");
               currentQuestionIndex -= 2;
             } else { // Si la pregunta de "menos de 10 trabajadores" SÍ se mostró (Micro/Pequeña), retrocede un paso
+              console.log("[previousQuestion] Company was Micro/Pequeña, skipping back 1 question.");
               currentQuestionIndex--;
             }
           } else {
+            console.log("[previousQuestion] Normal backtrack in section.");
             currentQuestionIndex--;
           }
         } else {
+          console.log("[previousQuestion] Normal backtrack in section.");
           currentQuestionIndex--;
         }
         loadQuestion();
       } else {
-        // Si estamos en la primera pregunta de una sección, volvemos a la sección anterior
+        // Si estamos en la primera pregunta de una sección, volvemos a la pantalla intersticial de la sección anterior
         if (currentSectionIndex > 0) {
+          console.log("[previousQuestion] First question of section. Going back to previous interstitial.");
           currentSectionIndex--;
-          // Establecer el índice de la pregunta al final de la sección anterior
-          currentQuestionIndex = sectionsData[currentSectionIndex].questions.length - 1;
-          loadQuestion();
+          currentQuestionIndex = 0; // Al volver a la pantalla intersticial, la próxima pregunta será la primera de esa sección
+          showInterstitialScreen(false); // No es la primera sección global, pero sí la primera de la sección a la que volvemos
         } else {
           // Si estamos en la primera pregunta de la primera sección, volvemos a la pantalla de resumen de secciones
+          console.log("[previousQuestion] First question of first section. Going back to sections overview.");
           questionsScreen.classList.add('hidden');
           sectionsOverviewScreen.classList.remove('hidden');
         }
       }
+      console.log(`[previousQuestion] End of previousQuestion. New Section: ${currentSectionIndex}, New Question: ${currentQuestionIndex}`);
     }
+
+    // Función para actualizar el estado de los botones de navegación (Volver y Siguiente)
+    function updateNavigationButtons() {
+        console.log("[updateNavigationButtons] Updating navigation buttons state.");
+        // Habilitar/deshabilitar el botón "Volver"
+        if (currentSectionIndex === 0 && currentQuestionIndex === 0) {
+            backBtn.disabled = true; // Deshabilitar si es la primera pregunta de la primera sección
+        } else {
+            backBtn.disabled = false; // Habilitar en cualquier otro caso
+        }
+
+        // Habilitar/deshabilitar el botón "Siguiente"
+        // El botón "Siguiente" debe estar deshabilitado si no se ha seleccionado una respuesta,
+        // a menos que la pregunta actual sea de tipo "conditional_income" y la recomendación
+        // sea "continue_to_next" (lo que significa que no se espera una selección para avanzar).
+        const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        if (selectedAnswer === null && !(currentQuestion.type === "conditional_income" && recommendationTextElement.innerHTML.includes("continúa a la siguiente pregunta"))) {
+            nextBtn.disabled = true;
+            console.log("[updateNavigationButtons] Next button disabled (no answer selected or not conditional income with continue).");
+        } else {
+            nextBtn.disabled = false;
+            console.log("[updateNavigationButtons] Next button enabled.");
+        }
+    }
+
 
     // Función para actualizar la barra de progreso
     function updateProgressBar() {
       const totalQuestionsInCurrentSection = sectionsData[currentSectionIndex].questions.length;
       let effectiveTotalQuestions = totalQuestionsInCurrentSection;
+      // Number of questions to consider for progress calculation, including the current one.
+      let questionsConsideredForProgress = currentQuestionIndex + 1; 
 
-      // Ajustar el total de preguntas para la barra de progreso si se salta una pregunta condicional en la Sección 3
+      // Special handling for Section 3 conditional question
       if (currentSectionIndex === 2) {
         const sectorQuestion = sectionsData[2].questions[0];
         const incomeQuestion = sectionsData[2].questions[1];
+        // Retrieve answers from history, as they would have been recorded by now
         const sectorAnswer = history.find(item => item.questionText === sectorQuestion.text)?.answer;
         const incomeAnswer = history.find(item => item.questionText === incomeQuestion.text)?.answer;
 
@@ -1153,15 +1265,33 @@ Reglamenta el uso de las TIC´S para llevar a cabo los procesos disciplinarios e
             tempCompanyClassification = incomeOption.classification;
           }
 
-          // Si la empresa es Mediana o Gran, se salta la pregunta condicional
+          // If company is Mediana or Gran, the conditional question (index 2) is skipped.
           if (tempCompanyClassification === "Mediana" || tempCompanyClassification === "Gran") {
-            effectiveTotalQuestions = totalQuestionsInCurrentSection - 1;
+            effectiveTotalQuestions = totalQuestionsInCurrentSection - 1; // One question is skipped from total
+            // If the current question index is *after* the skipped question's original index (index 2)
+            // we need to adjust the numerator because one question was skipped before this point.
+            if (currentQuestionIndex >= 2) {
+                questionsConsideredForProgress = currentQuestionIndex; // If Q3 was skipped, Q4 is now effectively Q3.
+            }
           }
         }
       }
 
-      const progress = ((currentQuestionIndex + 1) / effectiveTotalQuestions) * 100;
-      progressBarFill.style.width = `${progress}%`;
+      let progress = 0;
+      if (effectiveTotalQuestions > 0) {
+        progress = (questionsConsideredForProgress / effectiveTotalQuestions) * 100;
+      }
+
+      // Ensure progress is not negative or greater than 100
+      progress = Math.max(0, Math.min(100, progress));
+
+      if (progressBarFill) { // Defensive check to ensure element exists
+        progressBarFill.style.width = `${progress}%`;
+        // Log for debugging
+        console.log(`[ProgressBar] Sección: ${currentSectionIndex + 1}, Índice Pregunta Actual: ${currentQuestionIndex}, Preguntas Consideradas: ${questionsConsideredForProgress}, Total Efectivo: ${effectiveTotalQuestions}, Progreso Calculado: ${progress.toFixed(2)}%, Ancho Aplicado: ${progressBarFill.style.width}`);
+      } else {
+        console.error("[ProgressBar] Elemento 'progressBarFill' no encontrado.");
+      }
     }
 
 
