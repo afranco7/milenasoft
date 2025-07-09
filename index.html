@@ -264,6 +264,61 @@
       line-height: 1.6;
     }
 
+    /* Estilos para el consentimiento de datos */
+    .data-consent {
+      margin-top: 30px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9ff;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .data-consent p {
+      font-size: 0.95em;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .consent-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .consent-btn {
+      padding: 8px 20px;
+      border: 2px solid #e0e0e0;
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 0.9em;
+    }
+
+    .consent-btn:hover {
+      border-color: #667eea;
+      background: #f8f9ff;
+    }
+
+    .consent-btn.selected {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .consent-message {
+      text-align: center;
+      color: #d32f2f;
+      /* Rojo para el mensaje de error */
+      font-size: 0.85em;
+      margin-top: 5px;
+      font-weight: 500;
+    }
+
 
     @media (max-width: 768px) {
       .container {
@@ -329,8 +384,24 @@
           <label for="email">Correo Electrónico *</label>
           <input type="email" id="email" name="email" required>
         </div>
+
+        <!-- Nuevo bloque para el consentimiento de datos -->
+        <div class="data-consent">
+          <p>De conformidad con la Ley 1581 de 2012 de Protección de Datos Personales, al diligenciar y enviar este
+            formulario de autodiagnóstico, autorizo de manera voluntaria, previa, explícita e informada a Nicolás
+            Pareja & Asociados Abogados S.A.S., para que mis datos personales sean recolectados, almacenados, usados,
+            procesados, actualizados y en general tratados para contactarme, y así lo autorizo, para ampliar la
+            información relacionada con el diagnóstico realizado, y ofrecer una consulta especializada.</p>
+          <div class="consent-buttons">
+            <button type="button" class="consent-btn" id="consent-yes" data-consent="yes">Sí</button>
+            <button type="button" class="consent-btn" id="consent-no" data-consent="no">No</button>
+          </div>
+          <p id="consent-message" class="consent-message hidden">Si está de acuerdo con el tratamiento de sus datos,
+            indique "Sí" para poder continuar.</p>
+        </div>
+
         <div style="text-align: center;">
-          <button type="submit" class="btn">Consultar</button>
+          <button type="submit" class="btn" id="submit-initial-form">Consultar</button>
         </div>
       </form>
     </div>
@@ -426,6 +497,7 @@
     let history = []; // Para almacenar el historial de preguntas y respuestas
     let selectedAnswer = null;
     let companyClassification = null; // Para almacenar la clasificación de la empresa en Sección 3
+    let dataConsentGiven = false; // Variable para el consentimiento de datos
 
     const initialScreen = document.getElementById('initial-screen');
     const sectionsOverviewScreen = document.getElementById('sections-overview-screen'); // Renombrado
@@ -450,6 +522,13 @@
     const contactFormScreen = document.getElementById('contact-form-screen'); // Nueva pantalla de formulario de contacto
     const contactForm = document.getElementById('contact-form'); // Formulario de contacto
     const completionScreen = document.getElementById('completion-screen'); // Nueva pantalla de completado
+
+    // Nuevos elementos para el consentimiento de datos
+    const consentYesBtn = document.getElementById('consent-yes');
+    const consentNoBtn = document.getElementById('consent-no');
+    const consentMessage = document.getElementById('consent-message');
+    const submitInitialFormBtn = document.getElementById('submit-initial-form');
+
 
     // Definición de los umbrales de ingresos por sector
     const incomeThresholds = {
@@ -885,17 +964,44 @@ Recomendaciones clave:
       history = [];
       selectedAnswer = null;
       companyClassification = null;
+      dataConsentGiven = false; // Reiniciar el consentimiento de datos
+      submitInitialFormBtn.disabled = true; // Deshabilitar el botón de inicio hasta que se dé el consentimiento
+      consentYesBtn.classList.remove('selected');
+      consentNoBtn.classList.remove('selected');
+      consentMessage.classList.add('hidden');
     }
 
     // Manejador del formulario inicial
     userForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      // Aquí podrías guardar los datos del usuario si fuera necesario
-      // Por ahora, simplemente avanzamos a la pantalla de resumen de secciones
-      initialScreen.classList.add('hidden');
-      sectionsOverviewScreen.classList.remove('hidden');
-      populateSectionsList();
+      if (dataConsentGiven) {
+        // Aquí podrías guardar los datos del usuario si fuera necesario
+        // Por ahora, simplemente avanzamos a la pantalla de resumen de secciones
+        initialScreen.classList.add('hidden');
+        sectionsOverviewScreen.classList.remove('hidden');
+        populateSectionsList();
+      } else {
+        consentMessage.classList.remove('hidden'); // Mostrar mensaje si no hay consentimiento
+      }
     });
+
+    // Event listeners para los botones de consentimiento
+    consentYesBtn.addEventListener('click', function () {
+      dataConsentGiven = true;
+      submitInitialFormBtn.disabled = false;
+      consentYesBtn.classList.add('selected');
+      consentNoBtn.classList.remove('selected');
+      consentMessage.classList.add('hidden');
+    });
+
+    consentNoBtn.addEventListener('click', function () {
+      dataConsentGiven = false;
+      submitInitialFormBtn.disabled = true;
+      consentYesBtn.classList.remove('selected');
+      consentNoBtn.classList.add('selected');
+      consentMessage.classList.remove('hidden'); // Mostrar el mensaje de "Si está de acuerdo..."
+    });
+
 
     // Función para poblar la lista de secciones en la pantalla de resumen
     function populateSectionsList() {
