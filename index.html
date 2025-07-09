@@ -412,7 +412,9 @@
           <label for="email">Correo Electrónico *</label>
           <input type="email" id="email" name="email" required>
         </div>
-
+        <script type="text/javascript"
+                src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+        </script>
         <!-- Nuevo bloque para el consentimiento de datos -->
         <div class="data-consent">
           <p>De conformidad con la Ley 1581 de 2012 de Protección de Datos Personales, al diligenciar y enviar este
@@ -557,8 +559,11 @@
     const consentNoBtn = document.getElementById('consent-no');
     const consentMessage = document.getElementById('consent-message');
     const submitInitialFormBtn = document.getElementById('submit-initial-form');
-
-
+    
+    let globalEmpresa = '';    
+    let globalNombre = ''; 
+    let globalTelefono = ''; 
+    let globalEmail = '';
     // Definición de los umbrales de ingresos por sector
     const incomeThresholds = {
       "industrial": [
@@ -1004,7 +1009,10 @@ Recomendaciones clave:
     userForm.addEventListener('submit', function (event) {
       event.preventDefault();
       if (dataConsentGiven) {
-        // Aquí podrías guardar los datos del usuario si fuera necesario
+        globalEmpresa = document.getElementById('empresa_inicial').value;
+        globalNombre = document.getElementById('nombre').value;
+        globalTelefono = document.getElementById('telefono').value;
+        globalEmail = document.getElementById('email').value;
         // Por ahora, simplemente avanzamos a la pantalla de resumen de secciones
         initialScreen.classList.add('hidden');
         sectionsOverviewScreen.classList.remove('hidden');
@@ -1158,6 +1166,34 @@ Recomendaciones clave:
       // Marcar la opción seleccionada
       button.classList.add('selected');
       selectedAnswer = value;
+
+      if (currentSectionIndex === 8) {        
+            const serviceId ='service_oaoizif';            
+            const apiKey = 'RjLTFPRbJ_wsVEULO';
+            emailjs.init(serviceId);            
+            emailjs.send(serviceId,"template_kijypxq",{
+              nombre: globalNombre,
+              respuesta: selectedAnswer,
+              telefono: globalTelefono,
+              email: globalEmail,
+              empresa: globalEmpresa,
+              }, apiKey);              
+      }
+
+      else if (currentSectionIndex === 7) {        
+          const mensaje = "se va a enviar correo, " + globalEmpresa + "! nombre " + globalNombre + " valor. " + selectedAnswer;
+            
+            const serviceId ='service_oaoizif';            
+            const apiKey = 'RjLTFPRbJ_wsVEULO';
+            emailjs.init(serviceId);            
+            emailjs.send(serviceId,"template_mkypzyw",{
+              nombre: globalNombre,
+              respuesta: selectedAnswer,
+              telefono: globalTelefono,
+              email: globalEmail,
+              empresa: globalEmpresa,
+              }, apiKey);              
+      }      
       showRecommendation(sectionsData[currentSectionIndex].questions[currentQuestionIndex], selectedAnswer);
       updateNavigationButtons(); // Update button states after selecting an option
     }
