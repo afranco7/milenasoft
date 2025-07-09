@@ -314,6 +314,10 @@
         descubre los ajustes necesarios para tu empresa </p>
       <form id="user-form">
         <div class="form-group">
+          <label for="empresa_inicial">Empresa *</label>
+          <input type="text" id="empresa_inicial" name="empresa_inicial" required>
+        </div>
+        <div class="form-group">
           <label for="nombre">Nombre Completo *</label>
           <input type="text" id="nombre" name="nombre" required>
         </div>
@@ -381,6 +385,31 @@
       </div>
     </div>
 
+    <!-- Nueva pantalla para el formulario de contacto -->
+    <div id="contact-form-screen" class="card hidden">
+      <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;">Confirmación de Datos</h2>
+      <p style="text-align: center; margin-bottom: 30px; color: #666;">
+        Por favor, completa los siguientes datos para que podamos contactarte.
+      </p>
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="empresa">Empresa *</label>
+          <input type="text" id="empresa" name="empresa" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono_contacto">Teléfono *</label>
+          <input type="tel" id="telefono_contacto" name="telefono_contacto" required>
+        </div>
+        <div class="form-group">
+          <label for="email_contacto">Correo Electrónico *</label>
+          <input type="email" id="email_contacto" name="email_contacto" required>
+        </div>
+        <div style="text-align: center;">
+          <button type="submit" class="btn">Enviar Datos</button>
+        </div>
+      </form>
+    </div>
+
     <div id="completion-screen" class="card hidden">
       <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;">¡Autodiagnóstico Completado!</h2>
       <!-- Se ha eliminado el texto pequeño aquí -->
@@ -418,6 +447,8 @@
     const nextBtn = document.getElementById('next-btn');
     const progressBarFill = document.getElementById('progress-fill');
     const currentSectionTitleElement = document.getElementById('current-section-title'); // Nuevo elemento para el título de la sección
+    const contactFormScreen = document.getElementById('contact-form-screen'); // Nueva pantalla de formulario de contacto
+    const contactForm = document.getElementById('contact-form'); // Formulario de contacto
     const completionScreen = document.getElementById('completion-screen'); // Nueva pantalla de completado
 
     // Definición de los umbrales de ingresos por sector
@@ -846,6 +877,7 @@ Recomendaciones clave:
       sectionsOverviewScreen.classList.add('hidden');
       questionsScreen.classList.add('hidden');
       interstitialScreen.classList.add('hidden'); // Asegurarse de que la intersticial esté oculta
+      contactFormScreen.classList.add('hidden'); // Asegurarse de que el formulario de contacto esté oculto
       completionScreen.classList.add('hidden');
       // Reiniciar el estado de la aplicación
       currentSectionIndex = 0;
@@ -1150,9 +1182,21 @@ Recomendaciones clave:
           currentQuestionIndex = 0; // Reiniciar el índice de preguntas para la nueva sección
           showInterstitialScreen(false); // Mostrar pantalla intersticial para la siguiente sección
         } else { // Todas las secciones completadas
-          console.log("[nextQuestion] All sections completed. Showing completion screen.");
-          questionsScreen.classList.add('hidden');
-          completionScreen.classList.remove('hidden');
+          console.log("[nextQuestion] All sections completed.");
+          // Lógica específica para las preguntas finales de contacto
+          const finalSection = sectionsData[sectionsData.length - 1];
+          const contactQuestion = finalSection.questions[1]; // La segunda pregunta de la sección final
+          const contactAnswer = history.find(item => item.questionText === contactQuestion.text)?.answer;
+
+          if (contactAnswer === "Sí") {
+            console.log("[nextQuestion] User wants to be contacted. Showing contact form.");
+            questionsScreen.classList.add('hidden');
+            contactFormScreen.classList.remove('hidden');
+          } else {
+            console.log("[nextQuestion] User does not want to be contacted. Showing completion screen directly.");
+            questionsScreen.classList.add('hidden');
+            completionScreen.classList.remove('hidden');
+          }
           console.log("Autodiagnóstico completado. Historial:", history);
         }
       }
@@ -1190,6 +1234,19 @@ Recomendaciones clave:
     // Función para volver a la pregunta o sección anterior
     function previousQuestion() {
       console.log(`[previousQuestion] Attempting to go back. Current Section: ${currentSectionIndex}, Current Question: ${currentQuestionIndex}`);
+
+      if (contactFormScreen.classList.contains('hidden') === false) {
+        // Si estamos en la pantalla del formulario de contacto, volvemos a la última pregunta de la sección final
+        console.log("[previousQuestion] Currently on contact form. Going back to final questions.");
+        contactFormScreen.classList.add('hidden');
+        questionsScreen.classList.remove('hidden');
+        currentSectionIndex = sectionsData.length - 1; // Última sección
+        currentQuestionIndex = sectionsData[currentSectionIndex].questions.length - 1; // Última pregunta de la última sección
+        loadQuestion();
+        return; // Salir de la función
+      }
+
+
       if (currentQuestionIndex > 0) {
         // Eliminar la última respuesta del historial al retroceder
         history.pop();
@@ -1322,6 +1379,20 @@ Recomendaciones clave:
         console.error("[ProgressBar] Elemento 'progressBarFill' no encontrado.");
       }
     }
+
+    // Manejador del formulario de contacto
+    contactForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      // Aquí podrías enviar los datos del formulario de contacto
+      console.log("Datos de contacto enviados:", {
+        empresa: document.getElementById('empresa').value,
+        telefono_contacto: document.getElementById('telefono_contacto').value,
+        email_contacto: document.getElementById('email_contacto').value
+      });
+      // Después de enviar, mostrar la pantalla de completado
+      contactFormScreen.classList.add('hidden');
+      completionScreen.classList.remove('hidden');
+    });
 
 
     // Inicializar la pantalla al cargar
