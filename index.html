@@ -224,7 +224,8 @@
 
     .progress-bar {
       width: 100%;
-      height: 5px; /* Reduced height for a thinner bar */
+      height: 5px;
+      /* Reduced height for a thinner bar */
       background: #e0e0e0;
       border-radius: 4px;
       margin-bottom: 20px;
@@ -351,7 +352,7 @@
       <h2 id="interstitial-main-title" style="color: #1a237e; margin-bottom: 20px; text-align: center;"></h2>
       <p id="interstitial-description" style="text-align: center; margin-bottom: 30px; color: #666;"></p>
       <h3 id="next-section-title" style="color: #5e35b1; font-size: 1.8em; text-align: center; margin-bottom: 40px;">
-        </h3>
+      </h3>
       <div style="text-align: center;">
         <button id="continue-to-next-section-btn" class="btn">Continuar</button>
       </div>
@@ -382,10 +383,7 @@
 
     <div id="completion-screen" class="card hidden">
       <h2 style="color: #1a237e; margin-bottom: 20px; text-align: center;">¡Autodiagnóstico Completado!</h2>
-      <p style="text-align: center; margin-bottom: 30px; color: #666;">
-        Has completado todas las secciones del autodiagnóstico.
-        Pronto recibirás un resumen detallado de tus recomendaciones personalizadas en tu correo electrónico.
-      </p>
+      <!-- Se ha eliminado el texto pequeño aquí -->
       <div style="text-align: center;">
         <button class="btn" onclick="showInitialScreen()">Volver al Inicio</button>
       </div>
@@ -478,7 +476,7 @@ Recomendaciones clave:
 3. Controla las fechas para evitar prórrogas automáticas no deseadas, en adelante preferiblemente realiza las prórrogas por escrito.
 4. Verifica cuántas prórrogas han tenido los contratos hasta la fecha, evalúa cuáles cargos requieren continuidad y la posibilidad de replantear su modelo a contratos indefinidos lo cual puedes hacer mediante otrosí.
 5. Reevalúa qué cargos requieren realmente una vinculación temporal.`,
-            "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
+              "No": `En tu caso no se requieren ajustes adicionales derivados de la nueva norma.`
             }
           },
           {
@@ -816,6 +814,29 @@ Recomendaciones clave:
             }
           }
         ]
+      },
+      // SECCIÓN DE CIERRE: PREGUNTAS FINALES
+      {
+        title: "Preguntas Finales",
+        isClosingSection: true, // Flag para identificar esta sección como de cierre
+        questions: [
+          {
+            text: "¿Quieres recibir un reporte mas detallado de los ajustes que debes revisar para implementar la Reforma Laboral 2025 en tu empresa (Ley 2466 de 2025)?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": "¡Excelente! Nos pondremos en contacto contigo para enviarte el reporte detallado.",
+              "No": "Entendido. Si cambias de opinión, puedes volver a iniciar el autodiagnóstico en cualquier momento."
+            }
+          },
+          {
+            text: "¿Quisieras ser contactado para agendar una consulta especializada con Nicolás Pareja y Asociados?",
+            type: "yes_no",
+            recommendations: {
+              "Sí": "¡Perfecto! Un miembro de nuestro equipo se comunicará contigo a la brevedad para coordinar la consulta.",
+              "No": "Comprendido. Respetamos tu decisión. Si en el futuro requieres una consulta, no dudes en contactarnos."
+            }
+          }
+        ]
       }
     ];
 
@@ -848,10 +869,13 @@ Recomendaciones clave:
     function populateSectionsList() {
       sectionsList.innerHTML = ''; // Limpiar lista anterior
       sectionsData.forEach((section, index) => {
-        const p = document.createElement('p');
-        // Formato para el título de la sección: SECCIÓN X: TÍTULO EN MAYÚSCULAS
-        p.textContent = `SECCIÓN ${index + 1}: ${section.title.toUpperCase()}`;
-        sectionsList.appendChild(p);
+        // Solo añadir secciones que no sean de cierre a la lista numerada
+        if (!section.isClosingSection) {
+          const p = document.createElement('p');
+          // Formato para el título de la sección: SECCIÓN X: TÍTULO EN MAYÚSCULAS
+          p.textContent = `SECCIÓN ${index + 1}: ${section.title.toUpperCase()}`;
+          sectionsList.appendChild(p);
+        }
       });
     }
 
@@ -874,7 +898,12 @@ Recomendaciones clave:
       const question = section.questions[currentQuestionIndex];
 
       // Actualizar el título de la sección actual en formato solicitado
-      currentSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${section.title.toUpperCase()}`;
+      if (section.isClosingSection) {
+        currentSectionTitleElement.textContent = "Preguntas Finales"; // Título específico para la sección de cierre
+      } else {
+        currentSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${section.title.toUpperCase()}`;
+      }
+
 
       // Lógica para determinar si la pregunta "¿Tienes menos de 10 trabajadores?" debe mostrarse
       if (currentSectionIndex === 2 && currentQuestionIndex === 2 && question.type === "yes_no_conditional") {
@@ -968,34 +997,34 @@ Recomendaciones clave:
 
     // **NUEVA FUNCIÓN AUXILIAR: Formatea el texto de la recomendación con párrafos y viñetas**
     function formatRecommendationText(text) {
-        let formattedHtml = '';
-        // Reemplazar saltos de línea seguidos por un número y punto (ej: "1. Texto") con un marcador temporal para luego convertir a lista
-        // Esto es para manejar los numerales que el usuario ha añadido
-        let processedText = text.replace(/(\d+\.\s*)/g, '\n• ');
-        const lines = processedText.split('\n').map(line => line.trim()).filter(line => line !== ''); // Dividir por saltos de línea, limpiar espacios y remover líneas vacías
-        let inList = false;
+      let formattedHtml = '';
+      // Reemplazar saltos de línea seguidos por un número y punto (ej: "1. Texto") con un marcador temporal para luego convertir a lista
+      // Esto es para manejar los numerales que el usuario ha añadido
+      let processedText = text.replace(/(\d+\.\s*)/g, '\n• ');
+      const lines = processedText.split('\n').map(line => line.trim()).filter(line => line !== ''); // Dividir por saltos de línea, limpiar espacios y remover líneas vacías
+      let inList = false;
 
-        lines.forEach(line => {
-            // Si la línea comienza con un bullet (•)
-            if (line.startsWith('•')) {
-                if (!inList) {
-                    formattedHtml += '<ul>'; // Iniciar nueva lista si no estamos ya en una
-                    inList = true;
-                }
-                formattedHtml += `<li>${line.substring(1).trim()}</li>`; // Quitar el bullet y añadir como item de lista
-            } else {
-                if (inList) {
-                    formattedHtml += '</ul>'; // Cerrar lista si estábamos en una
-                    inList = false;
-                }
-                formattedHtml += `<p>${line}</p>`; // Es un párrafo
-            }
-        });
-
-        if (inList) { // Asegurarse de cerrar cualquier lista abierta al final
-            formattedHtml += '</ul>';
+      lines.forEach(line => {
+        // Si la línea comienza con un bullet (•)
+        if (line.startsWith('•')) {
+          if (!inList) {
+            formattedHtml += '<ul>'; // Iniciar nueva lista si no estamos ya en una
+            inList = true;
+          }
+          formattedHtml += `<li>${line.substring(1).trim()}</li>`; // Quitar el bullet y añadir como item de lista
+        } else {
+          if (inList) {
+            formattedHtml += '</ul>'; // Cerrar lista si estábamos en una
+            inList = false;
+          }
+          formattedHtml += `<p>${line}</p>`; // Es un párrafo
         }
-        return formattedHtml;
+      });
+
+      if (inList) { // Asegurarse de cerrar cualquier lista abierta al final
+        formattedHtml += '</ul>';
+      }
+      return formattedHtml;
     }
 
 
@@ -1116,45 +1145,45 @@ Recomendaciones clave:
       } else {
         // Se terminó la sección actual, intentar pasar a la siguiente
         if (currentSectionIndex < sectionsData.length - 1) { // Si hay más secciones
-            console.log("[nextQuestion] Section completed. Moving to next section interstitial.");
-            currentSectionIndex++;
-            currentQuestionIndex = 0; // Reiniciar el índice de preguntas para la nueva sección
-            showInterstitialScreen(false); // Mostrar pantalla intersticial para la siguiente sección
+          console.log("[nextQuestion] Section completed. Moving to next section interstitial.");
+          currentSectionIndex++;
+          currentQuestionIndex = 0; // Reiniciar el índice de preguntas para la nueva sección
+          showInterstitialScreen(false); // Mostrar pantalla intersticial para la siguiente sección
         } else { // Todas las secciones completadas
-            console.log("[nextQuestion] All sections completed. Showing completion screen.");
-            questionsScreen.classList.add('hidden');
-            completionScreen.classList.remove('hidden');
-            console.log("Autodiagnóstico completado. Historial:", history);
+          console.log("[nextQuestion] All sections completed. Showing completion screen.");
+          questionsScreen.classList.add('hidden');
+          completionScreen.classList.remove('hidden');
+          console.log("Autodiagnóstico completado. Historial:", history);
         }
       }
       console.log(`[nextQuestion] End of nextQuestion. New Section: ${currentSectionIndex}, New Question: ${currentQuestionIndex}`);
     }
 
     // Manejador del botón de continuar en la pantalla intersticial
-    continueToNextSectionBtn.addEventListener('click', function() {
-        console.log("[continueToNextSectionBtn] Continuing to next section.");
-        interstitialScreen.classList.add('hidden');
-        questionsScreen.classList.remove('hidden');
-        loadQuestion();
+    continueToNextSectionBtn.addEventListener('click', function () {
+      console.log("[continueToNextSectionBtn] Continuing to next section.");
+      interstitialScreen.classList.add('hidden');
+      questionsScreen.classList.remove('hidden');
+      loadQuestion();
     });
 
     // Función para mostrar la pantalla intersticial
     function showInterstitialScreen(isFirstSection = false) {
-        console.log(`[showInterstitialScreen] Displaying interstitial. Is first section: ${isFirstSection}`);
-        questionsScreen.classList.add('hidden');
-        interstitialScreen.classList.remove('hidden');
-        const nextSection = sectionsData[currentSectionIndex];
+      console.log(`[showInterstitialScreen] Displaying interstitial. Is first section: ${isFirstSection}`);
+      questionsScreen.classList.add('hidden');
+      interstitialScreen.classList.remove('hidden');
+      const nextSection = sectionsData[currentSectionIndex];
 
-        if (isFirstSection) {
-            interstitialMainTitle.textContent = "¡Comencemos tu autodiagnóstico!";
-            interstitialDescription.textContent = "Estás a punto de iniciar la primera sección de preguntas. Esto te ayudará a entender cómo la Reforma Laboral 2025 afecta a tu empresa.";
-            nextSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${nextSection.title.toUpperCase()}`;
-        } else {
-            interstitialMainTitle.textContent = "¡Preparado para la siguiente sección!";
-            interstitialDescription.textContent = "Estás a punto de comenzar:";
-            nextSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${nextSection.title.toUpperCase()}`;
-        }
-        console.log(`[showInterstitialScreen] Interstitial for section: ${nextSection.title}`);
+      if (isFirstSection) {
+        interstitialMainTitle.textContent = "¡Comencemos tu autodiagnóstico!";
+        interstitialDescription.textContent = "Estás a punto de iniciar la primera sección de preguntas. Esto te ayudará a entender cómo la Reforma Laboral 2025 afecta a tu empresa.";
+        nextSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${nextSection.title.toUpperCase()}`;
+      } else {
+        interstitialMainTitle.textContent = "¡Preparado para la siguiente sección!";
+        interstitialDescription.textContent = "Estás a punto de comenzar:";
+        nextSectionTitleElement.textContent = `SECCIÓN ${currentSectionIndex + 1}: ${nextSection.title.toUpperCase()}`;
+      }
+      console.log(`[showInterstitialScreen] Interstitial for section: ${nextSection.title}`);
     }
 
 
@@ -1220,26 +1249,26 @@ Recomendaciones clave:
 
     // Función para actualizar el estado de los botones de navegación (Volver y Siguiente)
     function updateNavigationButtons() {
-        console.log("[updateNavigationButtons] Updating navigation buttons state.");
-        // Habilitar/deshabilitar el botón "Volver"
-        if (currentSectionIndex === 0 && currentQuestionIndex === 0) {
-            backBtn.disabled = true; // Deshabilitar si es la primera pregunta de la primera sección
-        } else {
-            backBtn.disabled = false; // Habilitar en cualquier otro caso
-        }
+      console.log("[updateNavigationButtons] Updating navigation buttons state.");
+      // Habilitar/deshabilitar el botón "Volver"
+      if (currentSectionIndex === 0 && currentQuestionIndex === 0) {
+        backBtn.disabled = true; // Deshabilitar si es la primera pregunta de la primera sección
+      } else {
+        backBtn.disabled = false; // Habilitar en cualquier otro caso
+      }
 
-        // Habilitar/deshabilitar el botón "Siguiente"
-        // El botón "Siguiente" debe estar deshabilitado si no se ha seleccionado una respuesta,
-        // a menos que la pregunta actual sea de tipo "conditional_income" y la recomendación
-        // sea "continue_to_next" (lo que significa que no se espera una selección para avanzar).
-        const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
-        if (selectedAnswer === null && !(currentQuestion.type === "conditional_income" && recommendationTextElement.innerHTML.includes("continúa a la siguiente pregunta"))) {
-            nextBtn.disabled = true;
-            console.log("[updateNavigationButtons] Next button disabled (no answer selected or not conditional income with continue).");
-        } else {
-            nextBtn.disabled = false;
-            console.log("[updateNavigationButtons] Next button enabled.");
-        }
+      // Habilitar/deshabilitar el botón "Siguiente"
+      // El botón "Siguiente" debe estar deshabilitado si no se ha seleccionado una respuesta,
+      // a menos que la pregunta actual sea de tipo "conditional_income" y la recomendación
+      // sea "continue_to_next" (lo que significa que no se espera una selección para avanzar).
+      const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+      if (selectedAnswer === null && !(currentQuestion.type === "conditional_income" && recommendationTextElement.innerHTML.includes("continúa a la siguiente pregunta"))) {
+        nextBtn.disabled = true;
+        console.log("[updateNavigationButtons] Next button disabled (no answer selected or not conditional income with continue).");
+      } else {
+        nextBtn.disabled = false;
+        console.log("[updateNavigationButtons] Next button enabled.");
+      }
     }
 
 
@@ -1248,7 +1277,7 @@ Recomendaciones clave:
       const totalQuestionsInCurrentSection = sectionsData[currentSectionIndex].questions.length;
       let effectiveTotalQuestions = totalQuestionsInCurrentSection;
       // Number of questions to consider for progress calculation, including the current one.
-      let questionsConsideredForProgress = currentQuestionIndex + 1; 
+      let questionsConsideredForProgress = currentQuestionIndex + 1;
 
       // Special handling for Section 3 conditional question
       if (currentSectionIndex === 2) {
@@ -1271,7 +1300,7 @@ Recomendaciones clave:
             // If the current question index is *after* the skipped question's original index (index 2)
             // we need to adjust the numerator because one question was skipped before this point.
             if (currentQuestionIndex >= 2) {
-                questionsConsideredForProgress = currentQuestionIndex; // If Q3 was skipped, Q4 is now effectively Q3.
+              questionsConsideredForProgress = currentQuestionIndex; // If Q3 was skipped, Q4 is now effectively Q3.
             }
           }
         }
